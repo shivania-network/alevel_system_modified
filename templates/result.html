@@ -1,0 +1,406 @@
+{% extends "base.html" %}
+{% block title %}Recommendation Result{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+
+  <!-- ── Page header ── -->
+  <div class="text-center mb-5">
+    <div class="mb-3">
+      <span style="width:64px;height:64px;background:#eff6ff;border-radius:18px;display:inline-flex;align-items:center;justify-content:center;">
+        <i class="fas fa-graduation-cap" style="color:var(--primary);font-size:1.8rem;"></i>
+      </span>
+    </div>
+    <h2 class="fw-bold mb-1" style="color:var(--primary);">
+      Recommendation for <span style="color:var(--accent);">{{ student_name }}</span>
+    </h2>
+    <p class="text-muted small mb-0">
+      Based on Rwanda's Learning Pathways &bull;
+      <strong>MINEDUC Reform, June 2025</strong> &bull;
+      {{ gender_label }}
+    </p>
+  </div>
+
+  {% if guardian_email %}
+  <div class="alert border-0 mb-4"
+       style="background:#f0f9ff;border-left:4px solid #0ea5e9;border-radius:10px;">
+    <div class="d-flex gap-2 align-items-start">
+      <i class="fas fa-envelope-circle-check text-primary mt-1"></i>
+      <div class="small">
+        <strong>Parent/Guardian Notification:</strong>
+        {% if email_notice and email_notice.status == 'sent' %}
+          {{ email_notice.message }}
+        {% elif email_notice and email_notice.status == 'not_configured' %}
+          Email address entered: <strong>{{ guardian_email }}</strong>. {{ email_notice.message }}
+        {% else %}
+          Result was generated, but the printable result email could not be sent to <strong>{{ guardian_email }}</strong>.
+          {% if email_notice and email_notice.message %}{{ email_notice.message }}{% endif %}
+        {% endif %}
+      </div>
+    </div>
+  </div>
+  {% endif %}
+
+  <!-- ── Student Preferences Summary ── -->
+  <div class="card mb-4">
+    <div class="card-body p-3">
+      <div class="section-title mb-3">
+        <i class="fas fa-sliders me-2" style="color:#be185d;"></i>
+        Personal Preferences Used in Recommendation
+      </div>
+      <p class="small text-muted mb-3">
+        Final result combines <strong>{{ marks_weight }}% academic marks</strong>
+        and <strong>{{ prefs_weight }}% your preferences</strong> (wish, career, talent).
+      </p>
+      <div class="row g-2">
+        <div class="col-6 col-md-3">
+          <div class="p-3 rounded-3 text-center" style="background:#fdf2f8; border:1px solid #fbcfe8;">
+            <i class="fas fa-star mb-1" style="color:#be185d;font-size:.9rem;"></i>
+            <div class="small text-muted">Wish / Passion</div>
+            <div class="fw-semibold small mt-1">{{ student_choices.wish }}</div>
+          </div>
+        </div>
+        <div class="col-6 col-md-3">
+          <div class="p-3 rounded-3 text-center" style="background:#eff6ff; border:1px solid #bfdbfe;">
+            <i class="fas fa-briefcase mb-1" style="color:#2563eb;font-size:.9rem;"></i>
+            <div class="small text-muted">Career Interest</div>
+            <div class="fw-semibold small mt-1">{{ student_choices.career }}</div>
+          </div>
+        </div>
+        <div class="col-6 col-md-3">
+          <div class="p-3 rounded-3 text-center" style="background:#f0fdf4; border:1px solid #bbf7d0;">
+            <i class="fas fa-bullseye mb-1" style="color:#16a34a;font-size:.9rem;"></i>
+            <div class="small text-muted">Talent</div>
+            <div class="fw-semibold small mt-1">{{ student_choices.talent }}</div>
+          </div>
+        </div>
+        <div class="col-6 col-md-3">
+          <div class="p-3 rounded-3 text-center" style="background:#fefce8; border:1px solid #fde68a;">
+            <i class="fas fa-chart-line mb-1" style="color:#d97706;font-size:.9rem;"></i>
+            <div class="small text-muted">Labor Market</div>
+            <div class="fw-semibold small mt-1">{{ student_choices.labor }}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Top Recommendation ── -->
+  {% set top = results[0] %}
+  <div class="card mb-4" style="border-left:5px solid {{ top.color }};">
+    <div class="card-body p-4">
+      <div class="d-flex align-items-start gap-3 flex-wrap">
+        <div class="rank-badge" style="background:{{ top.color }};width:42px;height:42px;font-size:1.1rem;">1</div>
+        <div class="flex-grow-1">
+          <div class="d-flex align-items-center gap-2 mb-2 flex-wrap">
+            <span class="badge px-3 py-1" style="background:{{ top.color }};font-size:.75rem;letter-spacing:.3px;">
+              <i class="fas fa-trophy me-1"></i>TOP RECOMMENDATION
+            </span>
+            <span class="badge px-2 py-1" style="background:#f1f5f9;color:#475569;font-size:.72rem;">
+              {{ top.probability }}% confidence
+            </span>
+          </div>
+          <h3 class="fw-bold mb-2" style="color:{{ top.color }};">{{ top.pathway }}</h3>
+          <p class="text-muted mb-3" style="font-size:.9rem;">{{ top.description }}</p>
+
+          <div class="row g-2 mb-3">
+            <div class="col-md-4">
+              <div class="p-3 rounded-3" style="background:#f8fafc;border:1px solid var(--border);">
+                <div class="section-title mb-2" style="font-size:.7rem;">
+                  <i class="fas fa-book me-1" style="color:{{ top.color }};"></i>Pathway Subjects
+                </div>
+                <div class="small text-muted">{{ top.subjects }}</div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="p-3 rounded-3" style="background:#f8fafc;border:1px solid var(--border);">
+                <div class="section-title mb-2" style="font-size:.7rem;">
+                  <i class="fas fa-thumbtack me-1" style="color:{{ top.color }};"></i>Mandatory Subjects
+                </div>
+                <div class="small text-muted">{{ top.mandatory }}</div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="p-3 rounded-3" style="background:#f8fafc;border:1px solid var(--border);">
+                <div class="section-title mb-2" style="font-size:.7rem;">
+                  <i class="fas fa-briefcase me-1" style="color:{{ top.color }};"></i>Career Paths
+                </div>
+                <div class="small text-muted">{{ top.careers }}</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="d-flex justify-content-between small mb-1">
+            <span class="fw-semibold text-muted">Confidence Score</span>
+            <span class="fw-bold" style="color:{{ top.color }};">{{ top.probability }}%</span>
+          </div>
+          <div class="prob-bar">
+            <div class="prob-bar-fill" style="width:{{ top.probability }}%;background:{{ top.color }};"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Other Pathway Suggestions ── -->
+  <div class="section-title mb-3">
+    <i class="fas fa-lightbulb me-2" style="color:var(--accent);"></i>
+    Other Pathway Suggestions
+  </div>
+  <p class="text-muted small mb-3">
+    These pathways may also suit you — consider them if your interests or grades change.
+  </p>
+  <div class="row g-3 mb-5">
+    {% for r in results[1:] %}
+    <div class="col-md-6">
+      <div class="result-card card p-3" style="border-left-color:{{ r.color }};">
+        <div class="d-flex align-items-center gap-3">
+          <div class="rank-badge" style="background:{{ r.color }};">{{ r.rank }}</div>
+          <div class="flex-grow-1">
+            <h6 class="fw-bold mb-1" style="color:{{ r.color }};">{{ r.pathway }}</h6>
+            <p class="text-muted small mb-2" style="font-size:.8rem;">{{ r.careers }}</p>
+            <div class="d-flex justify-content-between small mb-1">
+              <span class="text-muted">Confidence</span>
+              <span class="fw-semibold">{{ r.probability }}%</span>
+            </div>
+            <div class="prob-bar">
+              <div class="prob-bar-fill" style="width:{{ r.probability }}%;background:{{ r.color }};"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+
+  <!-- ── Grades Summary Table ── -->
+  <div class="card mb-5">
+    <div class="card-header-primary">
+      <h5 class="mb-0">
+        <i class="fas fa-table me-2"></i>O-Level Marks — All Years &amp; 3-Year Average
+      </h5>
+      <p class="mb-0 small opacity-75 mt-1">
+        Individual marks per year alongside the averaged percentage used for this recommendation
+      </p>
+    </div>
+    <div class="card-body p-0">
+      <div class="table-responsive">
+        <table class="table table-hover align-middle mb-0" style="font-size:.88rem;">
+          <thead style="background:#f8fafc;">
+            <tr>
+              <th class="ps-4" style="min-width:150px; border-bottom:2px solid var(--border);">Subject</th>
+              <th class="text-center" style="width:85px; border-bottom:2px solid var(--border);">
+                <span class="badge rounded-pill" style="background:#1e3a5f20;color:#1e3a5f;font-size:.72rem;">S1 %</span>
+              </th>
+              <th class="text-center" style="width:85px; border-bottom:2px solid var(--border);">
+                <span class="badge rounded-pill" style="background:#b4530920;color:#b45309;font-size:.72rem;">S2 %</span>
+              </th>
+              <th class="text-center" style="width:85px; border-bottom:2px solid var(--border);">
+                <span class="badge rounded-pill" style="background:#7c3aed20;color:#7c3aed;font-size:.72rem;">S3 %</span>
+              </th>
+              <th class="text-center" style="width:150px; border-bottom:2px solid var(--border);">
+                <span class="badge rounded-pill" style="background:#f59e0b20;color:#d97706;font-size:.72rem;">3-YR AVERAGE</span>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {% set grade_colors = {
+              'A':'#16a34a','B':'#2563eb','C':'#7c3aed',
+              'D':'#b45309','E':'#dc2626','S':'#ea580c','F':'#6b7280'
+            } %}
+            {% set subject_icons = {
+              'Math':'fa-square-root-variable','Physics':'fa-atom',
+              'Chemistry':'fa-flask','Biology':'fa-leaf',
+              'Geography':'fa-earth-africa','History':'fa-landmark',
+              'Entrepreneurship':'fa-lightbulb','English':'fa-book-open',
+              'Kinyarwanda':'fa-flag'
+            } %}
+            {% for sub in subjects %}
+              {% set grade_str = grades.get(sub, '—') %}
+              {% set letter = grade_str[0] if grade_str and grade_str != '—' else '—' %}
+              {% set badge_color = grade_colors.get(letter, '#6b7280') %}
+              {% set ym = year_marks.get(sub, {}) if year_marks is defined else {} %}
+              {% set s1v = ym.get('s1') %}
+              {% set s2v = ym.get('s2') %}
+              {% set s3v = ym.get('s3') %}
+            <tr>
+              <td class="ps-4 fw-semibold">
+                <i class="fas {{ subject_icons.get(sub, 'fa-book') }} me-2"
+                   style="color:var(--primary);width:14px;"></i>{{ sub }}
+              </td>
+
+              <!-- S1 -->
+              <td class="text-center">
+                {% if s1v is not none %}
+                  <span class="fw-semibold" style="color:#1e3a5f;">{{ s1v | round(1) }}%</span>
+                {% else %}
+                  <span class="text-muted" style="font-size:.8rem;">—</span>
+                {% endif %}
+              </td>
+
+              <!-- S2 -->
+              <td class="text-center">
+                {% if s2v is not none %}
+                  <span class="fw-semibold" style="color:#b45309;">{{ s2v | round(1) }}%</span>
+                {% else %}
+                  <span class="text-muted" style="font-size:.8rem;">—</span>
+                {% endif %}
+              </td>
+
+              <!-- S3 -->
+              <td class="text-center">
+                {% if s3v is not none %}
+                  <span class="fw-semibold" style="color:#7c3aed;">{{ s3v | round(1) }}%</span>
+                {% else %}
+                  <span class="text-muted" style="font-size:.8rem;">—</span>
+                {% endif %}
+              </td>
+
+              <!-- 3-year average badge -->
+              <td class="text-center">
+                <span class="badge px-3 py-2 rounded-pill"
+                      style="background:{{ badge_color }};font-size:.82rem;letter-spacing:.2px;">
+                  {{ grade_str }}
+                </span>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      <div class="px-4 py-2 border-top d-flex align-items-center gap-3 flex-wrap"
+           style="background:#f8fafc;">
+        <div class="d-flex align-items-center gap-2">
+          <span class="badge rounded-pill" style="background:#1e3a5f20;color:#1e3a5f;font-size:.72rem;">S1 %</span>
+          <span class="text-muted small">Senior 1</span>
+        </div>
+        <div class="d-flex align-items-center gap-2">
+          <span class="badge rounded-pill" style="background:#b4530920;color:#b45309;font-size:.72rem;">S2 %</span>
+          <span class="text-muted small">Senior 2</span>
+        </div>
+        <div class="d-flex align-items-center gap-2">
+          <span class="badge rounded-pill" style="background:#7c3aed20;color:#7c3aed;font-size:.72rem;">S3 %</span>
+          <span class="text-muted small">Senior 3</span>
+        </div>
+        <div class="d-flex align-items-center gap-2 ms-auto">
+          <span class="badge rounded-pill" style="background:#f59e0b20;color:#d97706;font-size:.72rem;">3-YR AVERAGE</span>
+          <span class="text-muted small">Used for recommendation</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Change Preferences Panel ── -->
+  <div class="card mb-4 border-0 shadow-sm" id="changePrefsCard" style="display:none!important;">
+    <div class="card-header-primary rounded-top">
+      <h5 class="mb-0"><i class="fas fa-sliders me-2"></i>Change My Preferences</h5>
+      <p class="mb-0 small opacity-75 mt-1">
+        Update your wish, career, talent or labor market choice — your grades stay the same.
+      </p>
+    </div>
+    <div class="card-body p-4">
+      <form action="/predict" method="POST" id="changePrefsForm">
+
+        {# Re-send all grade fields as hidden inputs #}
+        <input type="hidden" name="student_name" value="{{ student_name }}"/>
+        <input type="hidden" name="gender"       value="{{ gender_val }}"/>
+        <input type="hidden" name="guardian_email" value="{{ guardian_email }}"/>
+        {% for sub in subjects %}
+          <input type="hidden" name="{{ sub }}" value="{{ form_data.get(sub, '') }}"/>
+          {% for yr in ['s1','s2','s3'] %}
+            {% if form_data.get(yr + '_' + sub) %}
+              <input type="hidden" name="{{ yr }}_{{ sub }}" value="{{ form_data.get(yr + '_' + sub, '') }}"/>
+            {% endif %}
+          {% endfor %}
+        {% endfor %}
+
+        <div class="row g-3">
+          <div class="col-md-6">
+            <label class="form-label fw-semibold small text-uppercase text-secondary">
+              <i class="fas fa-star me-1" style="color:#be185d;"></i>Study Area I Wish to Pursue *
+            </label>
+            <select name="student_wish" class="form-select" required>
+              <option value="">— Choose study area —</option>
+              {% for val, label in wish_options %}
+              <option value="{{ val }}" {{ 'selected' if student_choices.wish == val }}>{{ label }}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <div class="col-md-6">
+            <label class="form-label fw-semibold small text-uppercase text-secondary">
+              <i class="fas fa-briefcase me-1 text-primary"></i>Career Interest *
+            </label>
+            <select name="career_interest" class="form-select" required>
+              <option value="">— Choose career —</option>
+              {% for val, label in career_options %}
+              <option value="{{ val }}" {{ 'selected' if student_choices.career == val }}>{{ label }}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <div class="col-md-6">
+            <label class="form-label fw-semibold small text-uppercase text-secondary">
+              <i class="fas fa-bullseye me-1 text-success"></i>Strongest Talent *
+            </label>
+            <select name="talent" class="form-select" required>
+              <option value="">— Choose talent —</option>
+              {% for val, label in talent_options %}
+              <option value="{{ val }}" {{ 'selected' if student_choices.talent == val }}>{{ label }}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <div class="col-md-6">
+            <label class="form-label fw-semibold small text-uppercase text-secondary">
+              <i class="fas fa-chart-line me-1 text-warning"></i>Labor Market *
+            </label>
+            <select name="labor_market" class="form-select" required>
+              <option value="">— Choose preference —</option>
+              {% for val, label in labor_options %}
+              <option value="{{ val }}" {{ 'selected' if student_choices.labor == val }}>{{ label }}</option>
+              {% endfor %}
+            </select>
+          </div>
+        </div>
+
+        <div class="d-flex gap-3 flex-wrap mt-4">
+          <button type="submit" class="btn btn-primary btn-lg px-5 fw-bold">
+            <i class="fas fa-refresh me-2"></i>Get New Result
+          </button>
+          <button type="button" class="btn btn-outline-secondary btn-lg px-4"
+                  onclick="togglePrefsPanel(false)">
+            <i class="fas fa-times me-2"></i>Cancel
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ── Actions ── -->
+  <div class="d-flex gap-3 flex-wrap justify-content-center mb-5">
+    <button onclick="togglePrefsPanel(true)"
+            class="btn btn-warning btn-lg px-5 fw-bold">
+      <i class="fas fa-sliders me-2"></i>Change My Preferences
+    </button>
+    <a href="/grades" class="btn btn-primary btn-lg px-4">
+      <i class="fas fa-rotate-left me-2"></i>Try Another Student
+    </a>
+    <button onclick="window.print()" class="btn btn-outline-secondary btn-lg px-4">
+      <i class="fas fa-print me-2"></i>Print
+    </button>
+  </div>
+
+</div>
+
+{% block extra_js %}
+<script>
+function togglePrefsPanel(show) {
+  const card = document.getElementById('changePrefsCard');
+  if (show) {
+    card.style.removeProperty('display');
+    card.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  } else {
+    card.style.display = 'none';
+  }
+}
+</script>
+{% endblock %}
+{% endblock %}

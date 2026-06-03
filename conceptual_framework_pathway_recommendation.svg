@@ -1,0 +1,113 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1160" height="760" viewBox="0 0 1160 760">
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L9,3 z" fill="#000"/>
+    </marker>
+    <style>
+      text { font-family: "Times New Roman", serif; fill: #000; }
+      .title { font-size: 18px; font-weight: bold; }
+      .box-title { font-size: 14px; font-weight: bold; }
+      .body { font-size: 13px; }
+      .box { fill: #fff; stroke: #000; stroke-width: 2; }
+      .arrow { stroke: #000; stroke-width: 2; fill: none; marker-end: url(#arrow); }
+    </style>
+  </defs>
+
+  <text class="title" x="580" y="40" text-anchor="middle">Figure 2.6: Conceptual framework of the pathway recommendation system</text>
+
+  <!-- Independent variables, left side -->
+  <rect class="box" x="40" y="110" width="270" height="90"/>
+  <text x="175" y="140" text-anchor="middle">
+    <tspan class="box-title" x="175">Independent variables</tspan>
+    <tspan class="body" x="175" dy="22">Student data collected through</tspan>
+    <tspan class="body" x="175" dy="20">the system form and survey</tspan>
+  </text>
+
+  <rect class="box" x="40" y="260" width="270" height="105"/>
+  <text x="175" y="290" text-anchor="middle">
+    <tspan class="box-title" x="175">Student performance</tspan>
+    <tspan class="body" x="175" dy="22">Gender and O-Level grades</tspan>
+    <tspan class="body" x="175" dy="20">in nine subjects</tspan>
+    <tspan class="body" x="175" dy="20">(Mathematics to Kinyarwanda)</tspan>
+  </text>
+
+  <rect class="box" x="40" y="430" width="270" height="105"/>
+  <text x="175" y="462" text-anchor="middle">
+    <tspan class="box-title" x="175">Student interests</tspan>
+    <tspan class="body" x="175" dy="22">Subject wish, career interest,</tspan>
+    <tspan class="body" x="175" dy="20">talent, and labour market factor</tspan>
+  </text>
+
+  <!-- Dependent variable, right side -->
+  <rect class="box" x="850" y="180" width="270" height="95"/>
+  <text x="985" y="215" text-anchor="middle">
+    <tspan class="box-title" x="985">Dependent variable</tspan>
+    <tspan class="body" x="985" dy="24">Recommended A-Level pathway</tspan>
+    <tspan class="body" x="985" dy="20">(ranked from most to least suitable)</tspan>
+  </text>
+
+  <rect class="box" x="870" y="330" width="230" height="55"/>
+  <text class="body" x="985" y="355" text-anchor="middle">
+    <tspan x="985">Mathematics</tspan>
+    <tspan x="985" dy="20">&amp; Sciences</tspan>
+  </text>
+  <rect class="box" x="870" y="405" width="230" height="55"/>
+  <text class="body" x="985" y="438" text-anchor="middle">Arts &amp; Humanities</text>
+  <rect class="box" x="870" y="480" width="230" height="55"/>
+  <text class="body" x="985" y="513" text-anchor="middle">Languages</text>
+  <rect class="box" x="870" y="555" width="230" height="55"/>
+  <text class="body" x="985" y="588" text-anchor="middle">TVET &amp; Technology</text>
+
+  <!-- Recommendation process, middle -->
+  <rect class="box" x="380" y="95" width="380" height="55"/>
+  <text class="box-title" x="570" y="128" text-anchor="middle">How the system works / recommendation process</text>
+
+  <rect class="box" x="380" y="180" width="380" height="65"/>
+  <text x="570" y="208" text-anchor="middle">
+    <tspan class="box-title" x="570">1. Data preparation</tspan>
+    <tspan class="body" x="570" dy="22">Convert letter grades to numbers and scale the data</tspan>
+  </text>
+
+  <rect class="box" x="380" y="280" width="380" height="65"/>
+  <text x="570" y="308" text-anchor="middle">
+    <tspan class="box-title" x="570">2. Calculate subject-group averages</tspan>
+    <tspan class="body" x="570" dy="22">Science, humanities, languages, technical, business, and overall</tspan>
+  </text>
+
+  <rect class="box" x="380" y="380" width="380" height="65"/>
+  <text x="570" y="408" text-anchor="middle">
+    <tspan class="box-title" x="570">3. Random Forest prediction</tspan>
+    <tspan class="body" x="570" dy="22">Predict the most suitable pathway for the student</tspan>
+  </text>
+
+  <rect class="box" x="380" y="480" width="380" height="65"/>
+  <text x="570" y="508" text-anchor="middle">
+    <tspan class="box-title" x="570">4. Adjust using student preferences</tspan>
+    <tspan class="body" x="570" dy="22">Final ranking considers both grades and personal choices</tspan>
+  </text>
+
+  <rect class="box" x="380" y="580" width="380" height="65"/>
+  <text x="570" y="608" text-anchor="middle">
+    <tspan class="box-title" x="570">5. Display recommendation</tspan>
+    <tspan class="body" x="570" dy="22">Show ranked pathways and print-ready result</tspan>
+  </text>
+
+  <!-- Arrows -->
+  <path class="arrow" d="M175 200 L175 255"/>
+  <path class="arrow" d="M175 200 L330 200 L330 483 L315 483"/>
+
+  <path class="arrow" d="M570 150 L570 175"/>
+  <path class="arrow" d="M570 245 L570 275"/>
+  <path class="arrow" d="M570 345 L570 375"/>
+  <path class="arrow" d="M570 445 L570 475"/>
+  <path class="arrow" d="M570 545 L570 575"/>
+
+  <path class="arrow" d="M310 313 L375 213"/>
+  <path class="arrow" d="M310 483 L375 513"/>
+
+  <path class="arrow" d="M760 613 L820 613 L820 228 L845 228"/>
+  <path class="arrow" d="M985 275 L985 325"/>
+  <path class="arrow" d="M985 385 L985 400"/>
+  <path class="arrow" d="M985 460 L985 475"/>
+  <path class="arrow" d="M985 535 L985 550"/>
+</svg>

@@ -1,0 +1,150 @@
+<mxfile host="app.diagrams.net" modified="2026-06-01T00:00:00.000Z" agent="Codex" version="24.7.17" type="device">
+  <diagram id="dfd-combined" name="Level 0 and Level 1 Same Page">
+    <mxGraphModel dx="1400" dy="1600" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1300" pageHeight="1500" math="0" shadow="0">
+      <root>
+        <mxCell id="0"/>
+        <mxCell id="1" parent="0"/>
+
+        <mxCell id="title" value="Data Flow Diagram - Academic Pathway Recommender" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#000000;fontSize=22;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="200" y="20" width="900" height="34" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="l0_label" value="LEVEL 0: Context Diagram" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;fontColor=#000000;fontSize=16;fontStyle=1;align=center;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="40" y="75" width="1220" height="34" as="geometry"/>
+        </mxCell>
+        <mxCell id="l0_student" value="Student" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;fontColor=#000000;fontStyle=1;fontSize=14;" vertex="1" parent="1">
+          <mxGeometry x="65" y="170" width="170" height="70" as="geometry"/>
+        </mxCell>
+        <mxCell id="l0_teacher" value="Teacher /&lt;br&gt;Guidance Staff" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;fontColor=#000000;fontStyle=1;fontSize=14;" vertex="1" parent="1">
+          <mxGeometry x="65" y="390" width="170" height="70" as="geometry"/>
+        </mxCell>
+        <mxCell id="l0_parent" value="Parent /&lt;br&gt;Guardian" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;fontColor=#000000;fontStyle=1;fontSize=14;" vertex="1" parent="1">
+          <mxGeometry x="1060" y="280" width="170" height="70" as="geometry"/>
+        </mxCell>
+        <mxCell id="l0_system" value="&lt;b&gt;0&lt;/b&gt;&lt;br&gt;&lt;b&gt;Academic Pathway&lt;br&gt;Recommendation System&lt;/b&gt;&lt;br&gt;&lt;br&gt;Receives student data, predicts a pathway,&lt;br&gt;prepares result, and sends notification" style="rounded=1;arcSize=10;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;fontColor=#000000;fontSize=14;align=center;verticalAlign=middle;spacing=8;" vertex="1" parent="1">
+          <mxGeometry x="465" y="220" width="370" height="155" as="geometry"/>
+        </mxCell>
+        <mxCell id="l0_e1" value="student details, grades,&lt;br&gt;interests, report cards" style="endArrow=block;html=1;rounded=0;strokeColor=#000000;strokeWidth=2;endFill=1;fontColor=#000000;fontSize=11;" edge="1" parent="1" source="l0_student" target="l0_system">
+          <mxGeometry width="50" height="50" relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="l0_e2" value="ranked recommendation&lt;br&gt;and print-ready result" style="endArrow=block;html=1;rounded=0;strokeColor=#000000;strokeWidth=2;endFill=1;fontColor=#000000;fontSize=11;" edge="1" parent="1" source="l0_system" target="l0_student">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="650" y="130"/>
+              <mxPoint x="150" y="130"/>
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="l0_e3" value="student information,&lt;br&gt;uploads, corrections" style="endArrow=block;html=1;rounded=0;strokeColor=#000000;strokeWidth=2;endFill=1;fontColor=#000000;fontSize=11;" edge="1" parent="1" source="l0_teacher" target="l0_system">
+          <mxGeometry width="50" height="50" relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="l0_e4" value="guidance report" style="endArrow=block;html=1;rounded=0;strokeColor=#000000;strokeWidth=2;endFill=1;fontColor=#000000;fontSize=11;" edge="1" parent="1" source="l0_system" target="l0_teacher">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="650" y="505"/>
+              <mxPoint x="150" y="505"/>
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="l0_e5" value="result-ready email notification" style="endArrow=block;html=1;rounded=0;strokeColor=#000000;strokeWidth=2;endFill=1;fontColor=#000000;fontSize=11;" edge="1" parent="1" source="l0_system" target="l0_parent">
+          <mxGeometry width="50" height="50" relative="1" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="l1_label" value="LEVEL 1: Process Diagram" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;fontColor=#000000;fontSize=16;fontStyle=1;align=center;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="40" y="575" width="1220" height="34" as="geometry"/>
+        </mxCell>
+        <mxCell id="l1_student" value="Student" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;fontColor=#000000;fontStyle=1;fontSize=14;" vertex="1" parent="1">
+          <mxGeometry x="40" y="700" width="160" height="65" as="geometry"/>
+        </mxCell>
+        <mxCell id="l1_teacher" value="Teacher /&lt;br&gt;Guidance Staff" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;fontColor=#000000;fontStyle=1;fontSize=14;" vertex="1" parent="1">
+          <mxGeometry x="40" y="1110" width="160" height="65" as="geometry"/>
+        </mxCell>
+        <mxCell id="l1_parent" value="Parent /&lt;br&gt;Guardian" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;fontColor=#000000;fontStyle=1;fontSize=14;" vertex="1" parent="1">
+          <mxGeometry x="1085" y="1270" width="150" height="65" as="geometry"/>
+        </mxCell>
+        <mxCell id="l1_p1" value="&lt;b&gt;1.0 Capture Inputs&lt;/b&gt;&lt;br&gt;Name, gender, grades,&lt;br&gt;interests, guardian email" style="rounded=1;arcSize=10;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;fontColor=#000000;fontSize=12;align=center;verticalAlign=middle;spacing=8;" vertex="1" parent="1">
+          <mxGeometry x="260" y="690" width="210" height="80" as="geometry"/>
+        </mxCell>
+        <mxCell id="l1_p2" value="&lt;b&gt;2.0 Validate / OCR&lt;/b&gt;&lt;br&gt;Validate grades and&lt;br&gt;extract uploaded reports" style="rounded=1;arcSize=10;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;fontColor=#000000;fontSize=12;align=center;verticalAlign=middle;spacing=8;" vertex="1" parent="1">
+          <mxGeometry x="260" y="865" width="210" height="80" as="geometry"/>
+        </mxCell>
+        <mxCell id="l1_p3" value="&lt;b&gt;3.0 Prepare Data&lt;br&gt;and Build Features&lt;/b&gt;&lt;br&gt;Encode categories and&lt;br&gt;compute group scores" style="rounded=1;arcSize=10;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;fontColor=#000000;fontSize=12;align=center;verticalAlign=middle;spacing=8;" vertex="1" parent="1">
+          <mxGeometry x="535" y="865" width="220" height="80" as="geometry"/>
+        </mxCell>
+        <mxCell id="l1_p4" value="&lt;b&gt;4.0 Predict Pathway&lt;/b&gt;&lt;br&gt;Random Forest returns&lt;br&gt;class probabilities" style="rounded=1;arcSize=10;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;fontColor=#000000;fontSize=12;align=center;verticalAlign=middle;spacing=8;" vertex="1" parent="1">
+          <mxGeometry x="820" y="865" width="210" height="80" as="geometry"/>
+        </mxCell>
+        <mxCell id="l1_p5" value="&lt;b&gt;5.0 Present / Print Results&lt;/b&gt;&lt;br&gt;Ranked pathways, careers,&lt;br&gt;confidence, printout" style="rounded=1;arcSize=10;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;fontColor=#000000;fontSize=12;align=center;verticalAlign=middle;spacing=8;" vertex="1" parent="1">
+          <mxGeometry x="820" y="1065" width="210" height="80" as="geometry"/>
+        </mxCell>
+        <mxCell id="l1_p6" value="&lt;b&gt;6.0 Send Email&lt;br&gt;Notification&lt;/b&gt;&lt;br&gt;Notify parent/guardian&lt;br&gt;that result is ready" style="rounded=1;arcSize=10;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;fontColor=#000000;fontSize=12;align=center;verticalAlign=middle;spacing=8;" vertex="1" parent="1">
+          <mxGeometry x="820" y="1260" width="210" height="80" as="geometry"/>
+        </mxCell>
+        <mxCell id="l1_d1" value="&lt;b&gt;D1 Survey Dataset&lt;/b&gt;&lt;br&gt;training records" style="shape=cylinder3d;whiteSpace=wrap;boundedLbl=1;backgroundOutline=1;size=15;html=1;fillColor=#ffffff;strokeColor=#000000;fontColor=#000000;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="535" y="680" width="220" height="80" as="geometry"/>
+        </mxCell>
+        <mxCell id="l1_d2" value="&lt;b&gt;D2 Model Artifacts&lt;/b&gt;&lt;br&gt;model, scaler, encoder" style="shape=cylinder3d;whiteSpace=wrap;boundedLbl=1;backgroundOutline=1;size=15;html=1;fillColor=#ffffff;strokeColor=#000000;fontColor=#000000;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="820" y="680" width="210" height="80" as="geometry"/>
+        </mxCell>
+        <mxCell id="l1_d3" value="&lt;b&gt;D3 Temporary Upload Store&lt;/b&gt;&lt;br&gt;PDF/image removed after OCR" style="shape=cylinder3d;whiteSpace=wrap;boundedLbl=1;backgroundOutline=1;size=15;html=1;fillColor=#ffffff;strokeColor=#000000;fontColor=#000000;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="260" y="1025" width="210" height="80" as="geometry"/>
+        </mxCell>
+        <mxCell id="l1_d4" value="&lt;b&gt;D4 SMTP Settings&lt;/b&gt;&lt;br&gt;email server configuration" style="shape=cylinder3d;whiteSpace=wrap;boundedLbl=1;backgroundOutline=1;size=15;html=1;fillColor=#ffffff;strokeColor=#000000;fontColor=#000000;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="535" y="1260" width="220" height="80" as="geometry"/>
+        </mxCell>
+        <mxCell id="l1_e1" value="student details, grades,&lt;br&gt;interests, guardian email" style="endArrow=block;html=1;rounded=0;strokeColor=#000000;strokeWidth=2;endFill=1;fontColor=#000000;fontSize=10;" edge="1" parent="1" source="l1_student" target="l1_p1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="l1_e2" value="submitted form / report files" style="endArrow=block;html=1;rounded=0;strokeColor=#000000;strokeWidth=2;endFill=1;fontColor=#000000;fontSize=10;" edge="1" parent="1" source="l1_p1" target="l1_p2">
+          <mxGeometry width="50" height="50" relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="l1_e3" value="validated grades / OCR text" style="endArrow=block;html=1;rounded=0;strokeColor=#000000;strokeWidth=2;endFill=1;fontColor=#000000;fontSize=10;" edge="1" parent="1" source="l1_p2" target="l1_p3">
+          <mxGeometry width="50" height="50" relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="l1_e4" value="training data" style="endArrow=block;html=1;rounded=0;strokeColor=#000000;strokeWidth=2;endFill=1;fontColor=#000000;fontSize=10;" edge="1" parent="1" source="l1_d1" target="l1_p3">
+          <mxGeometry width="50" height="50" relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="l1_e5" value="feature vector" style="endArrow=block;html=1;rounded=0;strokeColor=#000000;strokeWidth=2;endFill=1;fontColor=#000000;fontSize=10;" edge="1" parent="1" source="l1_p3" target="l1_p4">
+          <mxGeometry width="50" height="50" relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="l1_e6" value="model artifacts" style="endArrow=block;html=1;rounded=0;strokeColor=#000000;strokeWidth=2;endFill=1;fontColor=#000000;fontSize=10;" edge="1" parent="1" source="l1_d2" target="l1_p4">
+          <mxGeometry width="50" height="50" relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="l1_e7" value="pathway probabilities" style="endArrow=block;html=1;rounded=0;strokeColor=#000000;strokeWidth=2;endFill=1;fontColor=#000000;fontSize=10;" edge="1" parent="1" source="l1_p4" target="l1_p5">
+          <mxGeometry width="50" height="50" relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="l1_e8" value="uploaded PDF/image" style="endArrow=block;html=1;rounded=0;strokeColor=#000000;strokeWidth=2;endFill=1;fontColor=#000000;fontSize=10;" edge="1" parent="1" source="l1_p2" target="l1_d3">
+          <mxGeometry width="50" height="50" relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="l1_e9" value="file for OCR" style="endArrow=block;html=1;rounded=0;strokeColor=#000000;strokeWidth=2;endFill=1;fontColor=#000000;fontSize=10;" edge="1" parent="1" source="l1_d3" target="l1_p2">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="235" y="1065"/>
+              <mxPoint x="235" y="905"/>
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="l1_e10" value="guidance report" style="endArrow=block;html=1;rounded=0;strokeColor=#000000;strokeWidth=2;endFill=1;fontColor=#000000;fontSize=10;" edge="1" parent="1" source="l1_p5" target="l1_teacher">
+          <mxGeometry width="50" height="50" relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="l1_e11" value="ranked result / printout" style="endArrow=block;html=1;rounded=0;strokeColor=#000000;strokeWidth=2;endFill=1;fontColor=#000000;fontSize=10;" edge="1" parent="1" source="l1_p5" target="l1_student">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="925" y="1450"/>
+              <mxPoint x="120" y="1450"/>
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="l1_e12" value="result-ready event" style="endArrow=block;html=1;rounded=0;strokeColor=#000000;strokeWidth=2;endFill=1;fontColor=#000000;fontSize=10;" edge="1" parent="1" source="l1_p5" target="l1_p6">
+          <mxGeometry width="50" height="50" relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="l1_e13" value="SMTP configuration" style="endArrow=block;html=1;rounded=0;strokeColor=#000000;strokeWidth=2;endFill=1;fontColor=#000000;fontSize=10;" edge="1" parent="1" source="l1_d4" target="l1_p6">
+          <mxGeometry width="50" height="50" relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="l1_e14" value="email notification" style="endArrow=block;html=1;rounded=0;strokeColor=#000000;strokeWidth=2;endFill=1;fontColor=#000000;fontSize=10;" edge="1" parent="1" source="l1_p6" target="l1_parent">
+          <mxGeometry width="50" height="50" relative="1" as="geometry"/>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

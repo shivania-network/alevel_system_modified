@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+{% block title %}Not Eligible{% endblock %}
+
+{% block content %}
+<div class="container my-5" style="max-width:760px;">
+
+  <!-- ── Header ── -->
+  <div class="text-center mb-5">
+    <div class="mb-3">
+      <span style="width:72px;height:72px;background:#fee2e2;border-radius:20px;display:inline-flex;align-items:center;justify-content:center;">
+        <i class="fas fa-circle-xmark" style="color:#dc2626;font-size:2rem;"></i>
+      </span>
+    </div>
+    <h2 class="fw-bold mb-1" style="color:#dc2626;">No Marks Entered</h2>
+    <p class="text-muted">Result for <strong>{{ student_name }}</strong></p>
+  </div>
+
+  <!-- ── Reason card ── -->
+  <div class="card mb-4" style="border-left:5px solid #dc2626;">
+    <div class="card-body p-4">
+
+      <div class="section-title mb-3">
+        <i class="fas fa-circle-info me-2" style="color:#dc2626;"></i>
+        Why no recommendation was given
+      </div>
+
+      <div class="p-3 rounded-3 mb-4" style="background:#fef2f2;border:1px solid #fecaca;">
+        <p class="mb-1">
+          No marks were entered for any subject. The system cannot make a
+          recommendation without at least some grade data.
+        </p>
+        <p class="mb-0">
+          Please go back and enter your percentage marks for at least the subjects
+          you have results for — even partial data will produce a useful recommendation.
+        </p>
+      </div>
+
+      <!-- Full grade summary — only show if there's something to show -->
+      {% if grades and grades.values() | list | reject('equalto', '—') | list %}
+      <div class="section-title mb-3">
+        <i class="fas fa-table me-2"></i>Grade Summary
+      </div>
+      <div class="row g-2 mb-4">
+        {% for sub in subjects %}
+          {% set grade = grades.get(sub, '—') %}
+          {% if grade and grade[0] == 'F' or (grade and '(0' in grade) %}
+            {% set bg = '#fef2f2' %} {% set border = '#fecaca' %} {% set bc = '#dc2626' %}
+          {% elif grade and grade[0] in ['A','B','C','D','E','S'] %}
+            {% set bg = '#f0fdf4' %} {% set border = '#bbf7d0' %} {% set bc = '#16a34a' %}
+          {% else %}
+            {% set bg = '#f8fafc' %} {% set border = '#e2e8f0' %} {% set bc = '#6b7280' %}
+          {% endif %}
+        <div class="col-6 col-md-4">
+          <div class="d-flex align-items-center justify-content-between rounded-3 px-3 py-2"
+               style="background:{{ bg }};border:1px solid {{ border }};">
+            <span class="small fw-semibold">{{ sub }}</span>
+            <span class="badge" style="background:{{ bc }};">{{ grade }}</span>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+      {% endif %}
+
+      <!-- Advice -->
+      <div class="p-3 rounded-3" style="background:#fffbeb;border:1px solid #fde68a;border-left:4px solid #f59e0b;">
+        <div class="section-title mb-2" style="font-size:.72rem;">
+          <i class="fas fa-lightbulb me-2" style="color:#d97706;"></i>What to do next
+        </div>
+        <ul class="mb-0 small" style="color:#78350f;padding-left:18px;">
+          <li class="mb-1">Go back and enter your percentage marks — even for subjects you did not pass.</li>
+          <li class="mb-1">The system recommends based on your <strong>best subjects</strong>, not only passed ones.</li>
+          <li class="mb-1">You only need at least one subject with a mark above 0% to get a recommendation.</li>
+          <li>If you have report cards, use the <a href="/upload">Upload Reports</a> feature to extract grades automatically.</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ── Actions ── -->
+  <div class="d-flex gap-3 flex-wrap justify-content-center">
+    <a href="/" class="btn btn-primary btn-lg px-5">
+      <i class="fas fa-rotate-left me-2"></i>Try Again with Different Grades
+    </a>
+    <a href="/about" class="btn btn-outline-secondary btn-lg px-4">
+      <i class="fas fa-circle-info me-2"></i>Learn More
+    </a>
+  </div>
+
+</div>
+{% endblock %}

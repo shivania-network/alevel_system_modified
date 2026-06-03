@@ -1,0 +1,259 @@
+{% extends "base.html" %}
+{% block title %}About{% endblock %}
+
+{% block content %}
+
+<!-- ── Page Header ── -->
+<div style="background:var(--primary);padding:40px 0 32px;">
+  <div class="container">
+    <nav aria-label="breadcrumb" class="mb-2">
+      <ol class="breadcrumb mb-0" style="font-size:.82rem;">
+        <li class="breadcrumb-item">
+          <a href="/" class="text-white opacity-75 text-decoration-none">Home</a>
+        </li>
+        <li class="breadcrumb-item active text-white">About</li>
+      </ol>
+    </nav>
+    <h1 class="text-white fw-bold mb-1" style="font-size:1.7rem;">
+      <i class="fas fa-circle-info me-2 opacity-75"></i>About This System
+    </h1>
+    <p class="text-white opacity-75 mb-0">
+      A-Level Academic Pathway Recommendation System &mdash;
+      BTech Capstone Project, Rwanda Polytechnic
+    </p>
+  </div>
+</div>
+
+<div class="container py-5">
+  <div class="row g-5">
+
+    <!-- ── Main content ── -->
+    <div class="col-12">
+
+      <!-- What is this system -->
+      <div class="card border-0 shadow-sm mb-4">
+        <div class="card-body p-4">
+          <h5 class="fw-bold mb-3" style="color:var(--primary);">
+            <i class="fas fa-circle-question me-2"></i>What Is This System?
+          </h5>
+          <p class="mb-3">
+            The <strong>A-Level Academic Pathway Recommendation System</strong> is a
+            web-based application that uses <strong>machine learning</strong> to recommend
+            the most suitable A-Level combination for O-Level students at
+            G.S NYAKINAMA I TSS, Musanze, Rwanda.
+          </p>
+          <p class="mb-0 text-muted">
+            Many students choose their A-Level pathway based on peer influence or
+            guesswork rather than their actual academic strengths. This system
+            provides an objective, data-driven recommendation by analysing a
+            student's O-Level grades across eleven subjects alongside their personal
+            preferences, career goals, and talents — giving every student a fair,
+            personalised guidance tool.
+          </p>
+        </div>
+      </div>
+
+      <!-- How to use -->
+      <div class="card border-0 shadow-sm mb-4">
+        <div class="card-body p-4">
+          <h5 class="fw-bold mb-4" style="color:var(--primary);">
+            <i class="fas fa-list-check me-2"></i>How to Use the System
+          </h5>
+
+          {% for num, icon, color, title, body in [
+            ('1','fa-pen-to-square','var(--primary)',
+             'Enter Your O-Level Marks',
+             'Go to <strong>Enter Grades</strong> and input your percentage marks for each of the 11 subjects across Senior 1 (S1), Senior 2 (S2), and Senior 3 (S3). You can enter marks for one, two, or all three years — the system automatically calculates the 3-year average per subject as you type.'),
+            ('2','fa-file-arrow-up','#7c3aed',
+             'Or Upload Your Report Cards',
+             'Use <strong>Upload Reports</strong> to upload your actual school report cards as PDF or image files. The system reads the grades automatically using OCR technology — no manual typing needed. You can upload up to 4 reports (S1 full, S2 full, S3 Term 1, S3 Term 2).'),
+            ('3','fa-sliders','#be185d',
+             'Share Your Preferences',
+             'Answer four short questions: what subject area you wish to study, what career interests you, what your strongest talent is, and whether job market demand influences your choice. These are used alongside your grades to produce a more personalised recommendation.'),
+            ('4','fa-paper-plane','#16a34a',
+             'Get Your Result',
+             'Click <strong>Get Result</strong>. The system ranks all four A-Level pathways by suitability and shows you the top recommendation with a confidence score, the subjects included in that pathway, and the career paths it leads to. You can print the result or try again with different inputs.'),
+          ] %}
+          <div class="d-flex gap-3 mb-4 {% if not loop.last %}pb-4 border-bottom{% endif %}">
+            <div class="flex-shrink-0">
+              <div class="d-flex align-items-center justify-content-center rounded-circle fw-bold text-white"
+                   style="width:40px;height:40px;background:{{ color }};font-size:.95rem;">
+                {{ num }}
+              </div>
+            </div>
+            <div>
+              <h6 class="fw-bold mb-1">
+                <i class="fas {{ icon }} me-2" style="color:{{ color }};"></i>{{ title }}
+              </h6>
+              <p class="text-muted small mb-0">{{ body | safe }}</p>
+            </div>
+          </div>
+          {% endfor %}
+
+        </div>
+      </div>
+
+      <!-- Rwanda A-Level Pathways -->
+      <div class="card border-0 shadow-sm mb-4">
+        <div class="card-body p-4">
+          <h5 class="fw-bold mb-1" style="color:var(--primary);">
+            <i class="fas fa-road me-2"></i>Rwanda A-Level Pathways
+          </h5>
+          <p class="text-muted small mb-4">
+            Following the MINEDUC National Education Conference on 20 June 2025, Rwanda
+            replaced 11 old subject combinations with 4 broad learning pathways.
+          </p>
+          <div class="row g-3">
+            {% for pathway, color, icon, desc, old in [
+              ('Mathematics & Sciences','#1e3a5f','fa-flask',
+               'Covers physical sciences, life sciences and quantitative social sciences. Leads to careers in medicine, engineering, technology and finance.',
+               'Replaces: PCM, PCB, MCB, MEG, MPG, MCE'),
+              ('Arts & Humanities','#be185d','fa-landmark',
+               'Develops critical thinking in social sciences, humanities and creative arts. Leads to careers in law, governance, education and public administration.',
+               'Replaces: HEG, HEL, HGL'),
+              ('Languages','#16a34a','fa-language',
+               'Focuses on multilingual communication in English, French, Kinyarwanda and Kiswahili. Leads to careers in journalism, diplomacy and translation.',
+               'Replaces: EFK, LFK, EKK'),
+              ('TVET — Technology','#0f766e','fa-microchip',
+               'Provides hands-on practical skills in computer systems, electronics and ICT directly applicable to the job market.',
+               'Unchanged by the 2025 reform'),
+            ] %}
+            <div class="col-md-6">
+              <div class="h-100 p-3 rounded-3"
+                   style="border-left:4px solid {{ color }};background:#f8fafc;border:1px solid #e2e8f0;border-left:4px solid {{ color }};">
+                <div class="d-flex align-items-center gap-2 mb-2">
+                  <span class="d-flex align-items-center justify-content-center rounded-2"
+                        style="width:30px;height:30px;background:{{ color }}18;flex-shrink:0;">
+                    <i class="fas {{ icon }}" style="color:{{ color }};font-size:.8rem;"></i>
+                  </span>
+                  <span class="fw-bold small" style="color:{{ color }};">{{ pathway }}</span>
+                </div>
+                <p class="text-muted small mb-2">{{ desc }}</p>
+                <span class="badge rounded-pill"
+                      style="background:{{ color }}15;color:{{ color }};font-size:.68rem;border:1px solid {{ color }}30;">
+                  {{ old }}
+                </span>
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+          <div class="alert border-0 mt-3 mb-0 p-3 rounded-3"
+               style="background:#eff6ff;border-left:4px solid var(--primary)!important;">
+            <i class="fas fa-thumbtack me-2" style="color:var(--primary);"></i>
+            <strong>Mandatory for all pathways:</strong>
+            Mathematics, English, ICT, Entrepreneurship, General Studies, Physical Education &amp; Sports
+          </div>
+        </div>
+      </div>
+
+      <!-- How the ML works -->
+      <div class="card border-0 shadow-sm mb-4">
+        <div class="card-body p-4">
+          <h5 class="fw-bold mb-3" style="color:var(--primary);">
+            <i class="fas fa-brain me-2"></i>How the Recommendation Works
+          </h5>
+          <p class="mb-3">
+            The system uses a <strong>Random Forest Classifier</strong> — an ensemble
+            machine learning algorithm that builds 300 decision trees and combines
+            their outputs for a stable, accurate prediction.
+          </p>
+          <div class="row g-3 mb-3">
+            {% for icon, color, bg, title, desc in [
+              ('fa-table','#2563eb','#eff6ff','20 Input Features',
+               '11 grades + 4 preferences + 6 computed group scores + gender'),
+              ('fa-tree','#16a34a','#f0fdf4','300 Decision Trees',
+               'Each tree votes independently; the majority wins'),
+              ('fa-chart-bar','#d97706','#fef3c7','84% Accuracy',
+               'Validated on held-out test data using 5-fold cross-validation'),
+            ] %}
+            <div class="col-md-4">
+              <div class="p-3 rounded-3 text-center h-100"
+                   style="background:{{ bg }};border:1px solid {{ color }}20;">
+                <i class="fas {{ icon }} mb-2" style="color:{{ color }};font-size:1.2rem;"></i>
+                <div class="fw-semibold small">{{ title }}</div>
+                <div class="text-muted" style="font-size:.75rem;">{{ desc }}</div>
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+          <div class="p-3 rounded-3" style="background:#f8fafc;border:1px solid var(--border);">
+            <p class="small text-muted mb-0">
+              <i class="fas fa-circle-info me-2" style="color:var(--primary);"></i>
+              The recommendation focuses on your <strong>strongest subjects</strong>.
+              Even if you have failed subjects, the system will still recommend the
+              pathway that best matches your academic profile. Only students with
+              all subjects at 0% are not given a recommendation.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Grading scale -->
+      <div class="card border-0 shadow-sm mb-4">
+        <div class="card-body p-4">
+          <h5 class="fw-bold mb-3" style="color:var(--primary);">
+            <i class="fas fa-percent me-2"></i>Rwanda NESA Grading Scale (CAMIS 2022+)
+          </h5>
+          <div class="row g-2">
+            {% for letter, range_, color, meaning in [
+              ('A','80 – 100%','#16a34a','Excellent'),
+              ('B','75 – 79%','#2563eb','Very Good'),
+              ('C','70 – 74%','#7c3aed','Good'),
+              ('D','65 – 69%','#b45309','Satisfactory'),
+              ('E','60 – 64%','#dc2626','Poor'),
+              ('S','50 – 59%','#ea580c','Satisfactory (CAMIS)'),
+              ('F','Below 50%','#6b7280','Fail'),
+            ] %}
+            <div class="col-6 col-md-3">
+              <div class="d-flex align-items-center gap-2 p-2 rounded-3"
+                   style="background:#f8fafc;border:1px solid #e2e8f0;">
+                <span class="badge rounded-circle d-flex align-items-center justify-content-center fw-bold"
+                      style="width:32px;height:32px;background:{{ color }};font-size:.9rem;flex-shrink:0;">
+                  {{ letter }}
+                </span>
+                <div>
+                  <div class="fw-semibold small">{{ range_ }}</div>
+                  <div class="text-muted" style="font-size:.72rem;">{{ meaning }}</div>
+                </div>
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+
+      <!-- Privacy -->
+      <div class="card border-0 shadow-sm">
+        <div class="card-body p-4">
+          <h5 class="fw-bold mb-3" style="color:var(--primary);">
+            <i class="fas fa-shield-halved me-2"></i>Privacy &amp; Data
+          </h5>
+          <div class="row g-3">
+            {% for icon, title, desc in [
+              ('fa-circle-check','No data stored',
+               'All inputs are processed in memory and discarded immediately after the recommendation is generated.'),
+              ('fa-circle-check','Local OCR only',
+               'Uploaded report cards are read locally using Tesseract OCR. No files are sent to any external server or cloud service.'),
+              ('fa-circle-check','No account needed',
+               'The system requires no login, registration, or personal identification. It is fully anonymous.'),
+            ] %}
+            <div class="col-md-4">
+              <div class="d-flex gap-2">
+                <i class="fas {{ icon }} mt-1 flex-shrink-0" style="color:#16a34a;"></i>
+                <div>
+                  <div class="fw-semibold small">{{ title }}</div>
+                  <div class="text-muted small">{{ desc }}</div>
+                </div>
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</div>
+
+{% endblock %}

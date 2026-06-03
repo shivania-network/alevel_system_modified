@@ -1,0 +1,353 @@
+{% extends "base.html" %}
+{% block title %}Upload Report Cards{% endblock %}
+
+{% block extra_css %}
+<style>
+  .upload-slot {
+    border: 2px dashed #cbd5e1;
+    border-radius: 14px;
+    padding: 28px 18px;
+    text-align: center;
+    transition: all .25s;
+    background: #f8fafc;
+    position: relative;
+    min-height: 160px;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    cursor: pointer;
+  }
+  .upload-slot:hover        { border-color: var(--primary); background: #eff6ff; }
+  .upload-slot.has-file     { border-color: #16a34a; border-style: solid; background: #f0fdf4; }
+  .upload-slot input[type=file] {
+    position: absolute; inset: 0; opacity: 0;
+    cursor: pointer; width: 100%; height: 100%; z-index: 2;
+  }
+  .slot-icon     { font-size: 2.4rem; }
+  .slot-label    { font-size: .88rem; font-weight: 700; color: var(--primary); margin-top: 8px; }
+  .slot-sublabel { font-size: .73rem; color: #64748b; margin-top: 2px; font-weight: 500; }
+  .slot-hint     { font-size: .7rem; color: #94a3b8; margin-top: 4px; }
+  .slot-filename { font-size: .72rem; color: #16a34a; font-weight: 600; margin-top: 8px; display: none; word-break: break-all; padding: 0 4px; }
+  .slot-remove {
+    display: none; position: absolute; top: 8px; right: 8px; z-index: 3;
+    background: #fee2e2; border: none; border-radius: 50%;
+    width: 26px; height: 26px; cursor: pointer;
+    font-size: .72rem; color: #dc2626; line-height: 26px;
+  }
+  .slot-disabled { opacity: .38; cursor: not-allowed !important; }
+  .year-card   { border-radius: 16px; overflow: hidden; box-shadow: 0 2px 14px rgba(0,0,0,.07); margin-bottom: 1.5rem; }
+  .year-header { padding: 14px 22px; display: flex; align-items: center; gap: 12px; }
+  .year-badge  { width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; font-weight: 800; color: white; flex-shrink: 0; }
+  .note-badge  { font-size: .72rem; padding: 3px 10px; border-radius: 20px; font-weight: 600; margin-left: auto; }
+  .upload-slot-wide {
+    min-height: 130px; padding: 24px 28px;
+    flex-direction: row; gap: 18px; text-align: left;
+  }
+  .upload-slot-wide .slot-icon { font-size: 2rem; flex-shrink: 0; }
+  .upload-slot-wide .slot-text { display: flex; flex-direction: column; }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="hero py-4">
+  <div class="container">
+    <h2 class="fw-bold mb-1">
+      <i class="fas fa-cloud-upload-alt me-2"></i>Upload O-Level Report Cards
+    </h2>
+    <p class="mb-0 opacity-75">
+      S1 (1 combined report) + S2 (1 combined report) + S3 (2 term reports) = <strong>4 files total</strong>
+    </p>
+  </div>
+</div>
+
+<div class="container my-5">
+
+  <form action="/upload/process" method="POST" enctype="multipart/form-data" id="uploadForm">
+
+    <div class="card mb-4">
+      <div class="card-header-blue">
+        <h5 class="mb-0"><i class="fas fa-user-graduate me-2"></i>Student Information</h5>
+      </div>
+      <div class="card-body p-4">
+        <div class="row g-3">
+          <div class="col-md-6 col-lg-4">
+            <label class="subject-label">Full Name</label>
+            <input type="text" name="student_name" class="form-control grade-select"
+                   placeholder="e.g. UWIMANA Alice" required/>
+          </div>
+          <div class="col-md-6 col-lg-2">
+            <label class="subject-label">Gender</label>
+            <select name="gender" class="form-select grade-select" required>
+              <option value="">-- Select --</option>
+              <option value="0">Female</option>
+              <option value="1">Male</option>
+            </select>
+          </div>
+          <div class="col-md-6 col-lg-3">
+            <label class="subject-label">School <span class="fw-normal text-muted">(optional)</span></label>
+            <input type="text" name="school" class="form-control grade-select"
+                   placeholder="e.g. G.S NYAKINAMA I TSS"/>
+          </div>
+          <div class="col-md-6 col-lg-3">
+            <label class="subject-label">Parent/Guardian Email <span class="text-danger">*</span></label>
+            <input type="email" name="guardian_email" class="form-control grade-select"
+                   placeholder="parent@example.com" required/>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card mb-4 border-0" style="background: linear-gradient(135deg, #eff6ff, #f0fdf4); border-radius:14px;">
+      <div class="card-body p-4">
+        <h6 class="fw-bold mb-3" style="color:var(--primary);">
+          <i class="fas fa-info-circle me-2 text-primary"></i>What to Upload
+        </h6>
+        <div class="row g-3 text-center">
+          <div class="col-4">
+            <div class="rounded-3 p-3" style="background:#1e3a5f15; border:2px solid #1e3a5f33;">
+              <div style="font-size:1.5rem;">📋</div>
+              <div class="fw-bold mt-1" style="color:#1e3a5f;">Senior 1</div>
+              <div class="mt-2"><span class="badge rounded-pill bg-primary" style="font-size:.68rem;">1 combined report</span></div>
+              <div class="text-muted mt-2" style="font-size:.7rem;">Contains all 3 terms</div>
+            </div>
+          </div>
+          <div class="col-4">
+            <div class="rounded-3 p-3" style="background:#b4530915; border:2px solid #b4530933;">
+              <div style="font-size:1.5rem;">📋</div>
+              <div class="fw-bold mt-1" style="color:#b45309;">Senior 2</div>
+              <div class="mt-2"><span class="badge rounded-pill" style="background:#b45309; font-size:.68rem;">1 combined report</span></div>
+              <div class="text-muted mt-2" style="font-size:.7rem;">Contains all 3 terms</div>
+            </div>
+          </div>
+          <div class="col-4">
+            <div class="rounded-3 p-3" style="background:#7c3aed15; border:2px solid #7c3aed33;">
+              <div style="font-size:1.5rem;">📋</div>
+              <div class="fw-bold mt-1" style="color:#7c3aed;">Senior 3</div>
+              <div class="mt-2 d-flex flex-column gap-1 align-items-center">
+                <span class="badge rounded-pill" style="background:#7c3aed; font-size:.68rem; width:80px;">Term 1 ✓</span>
+                <span class="badge rounded-pill" style="background:#7c3aed; font-size:.68rem; width:80px;">Term 2 ✓</span>
+                <span class="badge rounded-pill" style="background:#e2e8f0; color:#94a3b8; font-size:.68rem; width:80px;">Term 3 🚫</span>
+              </div>
+              <div class="text-muted mt-2" style="font-size:.7rem;"><strong>2 separate reports</strong></div>
+            </div>
+          </div>
+        </div>
+        <div class="alert alert-warning border-0 mt-3 mb-0 py-2 px-3" style="border-radius:10px; font-size:.78rem;">
+          <i class="fas fa-info-circle me-1"></i>
+          <strong>Why only 2 terms for S3?</strong>
+          The NESA national exam takes place in <strong>October–November (Term 3)</strong> — students are still sitting
+          exams when they apply. No S3 Term 3 report exists at that point.
+        </div>
+      </div>
+    </div>
+
+    {% set hdr_colors = ['#1e3a5f', '#b45309', '#7c3aed'] %}
+    {% set emojis     = ['1️⃣', '2️⃣', '3️⃣'] %}
+
+    {% for group_title, group_note, group_type, slots in report_groups %}
+    {% set gi = loop.index0 %}
+    <div class="year-card card">
+      <div class="year-header" style="background:{{ hdr_colors[gi] }}18; border-bottom:2px solid {{ hdr_colors[gi] }}33;">
+        <div class="year-badge" style="background:{{ hdr_colors[gi] }};">{{ emojis[gi] }}</div>
+        <div>
+          <div class="fw-bold" style="color:{{ hdr_colors[gi] }}; font-size:1rem;">{{ group_title }}</div>
+          <div class="text-muted" style="font-size:.74rem;">{{ group_note }}</div>
+        </div>
+        {% if group_type == 'single' %}
+          <span class="note-badge" style="background:#dcfce7; color:#166534;">📄 1 combined report</span>
+        {% else %}
+          <span class="note-badge" style="background:#fef9c3; color:#92400e;">⚡ 2 terms only</span>
+        {% endif %}
+      </div>
+
+      <div class="card-body p-4">
+        {% if group_type == 'single' %}
+          {% set slot_key = slots[0][0] %}
+          {% set slot_label = slots[0][1] %}
+          <div class="upload-slot upload-slot-wide" id="slot_{{ slot_key }}">
+            <input type="file" name="{{ slot_key }}" accept=".pdf,.jpg,.jpeg,.png"
+                   onchange="fileChosen('{{ slot_key }}', this)"/>
+            <button type="button" class="slot-remove" id="rm_{{ slot_key }}"
+                    onclick="removeFile('{{ slot_key }}', event)">✕</button>
+            <div class="slot-icon" id="icon_{{ slot_key }}">📄</div>
+            <div class="slot-text">
+              <div class="slot-label">{{ slot_label }}</div>
+              <div class="slot-sublabel">One PDF or image file containing all 3 terms</div>
+              <div class="slot-hint">PDF · JPG · PNG &nbsp;·&nbsp; max 16 MB</div>
+              <div class="slot-filename" id="fn_{{ slot_key }}"></div>
+            </div>
+          </div>
+
+        {% else %}
+          <div class="row g-3">
+            {% for slot_key, slot_label in slots %}
+            <div class="col-md-4">
+              <div class="upload-slot" id="slot_{{ slot_key }}">
+                <input type="file" name="{{ slot_key }}" accept=".pdf,.jpg,.jpeg,.png"
+                       onchange="fileChosen('{{ slot_key }}', this)"/>
+                <button type="button" class="slot-remove" id="rm_{{ slot_key }}"
+                        onclick="removeFile('{{ slot_key }}', event)">✕</button>
+                <div class="slot-icon" id="icon_{{ slot_key }}">📄</div>
+                <div class="slot-label">{{ slot_label }}</div>
+                <div class="slot-hint">PDF · JPG · PNG (max 16 MB)</div>
+                <div class="slot-filename" id="fn_{{ slot_key }}"></div>
+              </div>
+            </div>
+            {% endfor %}
+            <div class="col-md-4">
+              <div class="upload-slot slot-disabled">
+                <div class="slot-icon">🚫</div>
+                <div class="slot-label" style="color:#94a3b8;">S3 — Term 3</div>
+                <div class="slot-hint">Not available — exam period<br/>(Oct–Nov, in progress)</div>
+              </div>
+            </div>
+          </div>
+        {% endif %}
+      </div>
+    </div>
+    {% endfor %}
+
+    <div class="text-center mb-4">
+      <span class="badge rounded-pill px-4 py-2 fs-6" style="background:var(--primary);">
+        <i class="fas fa-file-upload me-2"></i>
+        <span id="uploadCount">0</span> / 4 reports selected
+      </span>
+    </div>
+
+    <div class="card border-0 p-4" style="background:#f0f9ff; border-radius:14px;">
+      <div class="d-flex gap-3 flex-wrap align-items-center">
+        <div class="flex-grow-1">
+          <p class="fw-bold mb-1" style="color:var(--primary);">Ready? Click to extract grades automatically.</p>
+          <p class="text-muted small mb-0">
+            The system uses OCR to read each report, extracts your grades, averages them,
+            then lets you review and correct anything before the recommendation is made.
+          </p>
+        </div>
+        <div class="d-flex gap-2 flex-wrap">
+          <button type="submit" class="btn btn-primary btn-lg px-5 fw-bold" id="submitBtn">
+            <i class="fas fa-magic me-2"></i>Extract Grades
+          </button>
+          <a href="/" class="btn btn-outline-secondary btn-lg">
+            <i class="fas fa-keyboard me-2"></i>Enter Manually
+          </a>
+        </div>
+      </div>
+    </div>
+
+  </form>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+let uploadCount = 0;
+
+function validEmail(value) {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
+}
+
+function fileChosen(slotKey, input) {
+  if (!input.files || !input.files[0]) return;
+  const file = input.files[0];
+  const slot = document.getElementById('slot_' + slotKey);
+  const fn   = document.getElementById('fn_'   + slotKey);
+  const icon = document.getElementById('icon_' + slotKey);
+  const rm   = document.getElementById('rm_'   + slotKey);
+
+  if (!slot.classList.contains('has-file')) {
+    slot.classList.add('has-file');
+    uploadCount++;
+    document.getElementById('uploadCount').textContent = uploadCount;
+  }
+  icon.textContent = file.name.toLowerCase().endsWith('.pdf') ? '📄' : '🖼️';
+  fn.textContent   = file.name.length > 30 ? file.name.substring(0, 27) + '…' : file.name;
+  fn.style.display = 'block';
+  rm.style.display = 'block';
+}
+
+function removeFile(slotKey, event) {
+  event.stopPropagation();
+  const slot  = document.getElementById('slot_' + slotKey);
+  const fn    = document.getElementById('fn_'   + slotKey);
+  const icon  = document.getElementById('icon_' + slotKey);
+  const rm    = document.getElementById('rm_'   + slotKey);
+  const input = slot.querySelector('input[type=file]');
+
+  if (slot.classList.contains('has-file')) {
+    slot.classList.remove('has-file');
+    uploadCount = Math.max(0, uploadCount - 1);
+    document.getElementById('uploadCount').textContent = uploadCount;
+  }
+  input.value = '';
+  icon.textContent = '📄';
+  fn.style.display = 'none';
+  rm.style.display = 'none';
+}
+
+document.getElementById('uploadForm').addEventListener('submit', function(e) {
+  const missingInfo = [];
+  const nameEl = document.querySelector('[name="student_name"]');
+  if (!nameEl || !nameEl.value.trim()) missingInfo.push('Student full name');
+  const guardianEmailEl = document.querySelector('[name="guardian_email"]');
+  if (!guardianEmailEl || !guardianEmailEl.value.trim()) {
+    missingInfo.push('Parent/Guardian email');
+  } else if (!validEmail(guardianEmailEl.value.trim())) {
+    e.preventDefault();
+    showModal({
+      type: 'warning',
+      title: 'Invalid Parent/Guardian Email',
+      subtitle: 'Please check the email address',
+      body: 'Enter a valid parent or guardian email address before uploading reports.',
+      okText: 'Go Back & Fix'
+    });
+    return;
+  }
+  const genderEl = document.querySelector('[name="gender"]');
+  if (!genderEl || !genderEl.value) missingInfo.push('Gender');
+  if (missingInfo.length > 0) {
+    e.preventDefault();
+    showModal({
+      type: 'warning',
+      title: 'Please Complete Student Information',
+      subtitle: 'Name and gender are required',
+      body: 'Fill in the following before uploading:',
+      items: missingInfo,
+      okText: 'Go Back & Fill'
+    });
+    return;
+  }
+
+  const requiredReports = [
+    ['s1',   'S1 full report'],
+    ['s2',   'S2 full report'],
+    ['s3t1', 'S3 term 1'],
+    ['s3t2', 'S3 term 2']
+  ];
+  const missingReports = requiredReports
+    .filter(([slotKey]) => !document.getElementById('slot_' + slotKey).classList.contains('has-file'))
+    .map(([, label]) => label);
+
+  if (missingReports.length > 0) {
+    e.preventDefault();
+    showModal({
+      type: 'warning',
+      title: 'Missing Reports',
+      subtitle: 'Upload all 4 required files',
+      body: 'These report cards are still missing:',
+      items: missingReports,
+      okText: 'Go Back & Upload'
+    });
+    return;
+  }
+
+  const btn = document.getElementById('submitBtn');
+  btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Reading reports…';
+  btn.disabled = true;
+});
+
+document.querySelectorAll('.upload-slot:not(.slot-disabled)').forEach(slot => {
+  slot.addEventListener('dragover',  e => { e.preventDefault(); slot.style.borderColor = '#1e3a5f'; });
+  slot.addEventListener('dragleave', ()  => { slot.style.borderColor = ''; });
+  slot.addEventListener('drop',      e  => { e.preventDefault(); slot.style.borderColor = ''; });
+});
+</script>
+{% endblock %}

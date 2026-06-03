@@ -1,0 +1,290 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1800" height="1120" viewBox="0 0 1800 1120">
+  <defs>
+    <style>
+      text {
+        font-family: Arial, Helvetica, sans-serif;
+        fill: #101828;
+      }
+      .title {
+        font-size: 30px;
+        font-weight: 700;
+      }
+      .subtitle {
+        font-size: 16px;
+        fill: #475467;
+      }
+      .entity-text {
+        font-size: 20px;
+        font-weight: 700;
+      }
+      .attr-text {
+        font-size: 16px;
+      }
+      .rel-text {
+        font-size: 15px;
+        font-weight: 700;
+      }
+      .cardinality {
+        font-size: 20px;
+        font-weight: 700;
+        fill: #1247a5;
+      }
+      .pk {
+        text-decoration: underline;
+      }
+      .connector {
+        stroke: #202124;
+        stroke-width: 2.1;
+        fill: none;
+      }
+      .entity-blue {
+        fill: #eaf2ff;
+        stroke: #2f65b0;
+        stroke-width: 3;
+      }
+      .entity-green {
+        fill: #eaf7e8;
+        stroke: #277a31;
+        stroke-width: 3;
+      }
+      .entity-yellow {
+        fill: #fff4cc;
+        stroke: #b88a00;
+        stroke-width: 3;
+      }
+      .entity-purple {
+        fill: #efe8ff;
+        stroke: #6f3fa3;
+        stroke-width: 3;
+      }
+      .attribute-blue {
+        fill: #ffffff;
+        stroke: #2f65b0;
+        stroke-width: 2;
+      }
+      .attribute-green {
+        fill: #ffffff;
+        stroke: #277a31;
+        stroke-width: 2;
+      }
+      .attribute-yellow {
+        fill: #ffffff;
+        stroke: #b88a00;
+        stroke-width: 2;
+      }
+      .attribute-purple {
+        fill: #ffffff;
+        stroke: #6f3fa3;
+        stroke-width: 2;
+      }
+      .relationship {
+        fill: #fff8dc;
+        stroke: #202124;
+        stroke-width: 2.2;
+      }
+      .note {
+        fill: #f9fafb;
+        stroke: #d0d5dd;
+        stroke-width: 1.6;
+      }
+      .note-text {
+        fill: #475467;
+        font-size: 15px;
+      }
+    </style>
+  </defs>
+
+  <rect x="0" y="0" width="1800" height="1120" fill="#ffffff"/>
+
+  <text class="title" x="900" y="54" text-anchor="middle">Entity Relationship Diagram - Academic Pathway Recommender</text>
+  <text class="subtitle" x="900" y="84" text-anchor="middle">Organized Chen-style ERD with aligned entities, clear relationships, primary keys, and cardinality labels</text>
+
+  <!-- Relationship connectors: clean main structure. -->
+  <line class="connector" x1="390" y1="465" x2="475" y2="465"/>
+  <line class="connector" x1="635" y1="465" x2="720" y2="465"/>
+  <line class="connector" x1="1030" y1="465" x2="1100" y2="465"/>
+  <line class="connector" x1="1260" y1="465" x2="1330" y2="465"/>
+  <line class="connector" x1="875" y1="510" x2="875" y2="595"/>
+  <line class="connector" x1="875" y1="695" x2="875" y2="780"/>
+  <line class="connector" x1="1030" y1="825" x2="1100" y2="825"/>
+  <polyline class="connector" points="1260,825 1465,825 1465,510"/>
+
+  <!-- Relationship diamonds. -->
+  <polygon class="relationship" points="555,415 635,465 555,515 475,465"/>
+  <text class="rel-text" x="555" y="471" text-anchor="middle">TRANSFORMS</text>
+  <text class="cardinality" x="420" y="453" text-anchor="middle">1</text>
+  <text class="cardinality" x="690" y="453" text-anchor="middle">1</text>
+
+  <polygon class="relationship" points="1180,415 1260,465 1180,515 1100,465"/>
+  <text class="rel-text" x="1180" y="471" text-anchor="middle">TRAINS</text>
+  <text class="cardinality" x="1070" y="453" text-anchor="middle">N</text>
+  <text class="cardinality" x="1292" y="453" text-anchor="middle">1</text>
+
+  <polygon class="relationship" points="875,595 955,645 875,695 795,645"/>
+  <text class="rel-text" x="875" y="651" text-anchor="middle">COMPUTES</text>
+  <text class="cardinality" x="900" y="552" text-anchor="middle">1</text>
+  <text class="cardinality" x="900" y="750" text-anchor="middle">1</text>
+
+  <polygon class="relationship" points="1180,775 1260,825 1180,875 1100,825"/>
+  <text class="rel-text" x="1180" y="831" text-anchor="middle">USES</text>
+  <text class="cardinality" x="1065" y="813" text-anchor="middle">N</text>
+  <text class="cardinality" x="1488" y="650" text-anchor="middle">1</text>
+
+  <!-- Student Survey Record attribute connectors. -->
+  <line class="connector" x1="255" y1="420" x2="155" y2="290"/>
+  <line class="connector" x1="255" y1="420" x2="330" y2="292"/>
+  <line class="connector" x1="120" y1="445" x2="92" y2="395"/>
+  <line class="connector" x1="120" y1="465" x2="78" y2="490"/>
+  <line class="connector" x1="120" y1="490" x2="130" y2="600"/>
+  <line class="connector" x1="255" y1="510" x2="258" y2="635"/>
+  <line class="connector" x1="350" y1="510" x2="385" y2="602"/>
+  <line class="connector" x1="390" y1="425" x2="433" y2="355"/>
+  <line class="connector" x1="390" y1="505" x2="440" y2="535"/>
+
+  <!-- Feature Set attribute connectors. -->
+  <line class="connector" x1="790" y1="420" x2="760" y2="290"/>
+  <line class="connector" x1="950" y1="420" x2="965" y2="290"/>
+  <line class="connector" x1="720" y1="430" x2="675" y2="355"/>
+  <line class="connector" x1="1030" y1="430" x2="1090" y2="355"/>
+  <line class="connector" x1="720" y1="500" x2="635" y2="600"/>
+  <line class="connector" x1="790" y1="510" x2="620" y2="685"/>
+  <line class="connector" x1="970" y1="510" x2="1130" y2="685"/>
+  <line class="connector" x1="1030" y1="500" x2="1120" y2="595"/>
+
+  <!-- Model Artifact attribute connectors. -->
+  <line class="connector" x1="1385" y1="420" x2="1280" y2="292"/>
+  <line class="connector" x1="1465" y1="420" x2="1495" y2="292"/>
+  <line class="connector" x1="1535" y1="420" x2="1635" y2="340"/>
+  <line class="connector" x1="1600" y1="452" x2="1692" y2="438"/>
+  <line class="connector" x1="1600" y1="478" x2="1692" y2="510"/>
+  <line class="connector" x1="1535" y1="510" x2="1605" y2="603"/>
+  <line class="connector" x1="1465" y1="510" x2="1420" y2="635"/>
+
+  <!-- Prediction Session attribute connectors. -->
+  <line class="connector" x1="720" y1="812" x2="560" y2="804"/>
+  <line class="connector" x1="720" y1="852" x2="640" y2="950"/>
+  <line class="connector" x1="815" y1="870" x2="800" y2="1010"/>
+  <line class="connector" x1="930" y1="870" x2="1010" y2="1010"/>
+  <line class="connector" x1="1030" y1="852" x2="1120" y2="950"/>
+  <line class="connector" x1="1030" y1="800" x2="1125" y2="735"/>
+
+  <!-- Student Survey Record attributes. -->
+  <ellipse class="attribute-blue" cx="155" cy="270" rx="94" ry="27"/>
+  <text class="attr-text pk" x="155" y="275" text-anchor="middle">record_id (PK)</text>
+
+  <ellipse class="attribute-blue" cx="330" cy="270" rx="62" ry="25"/>
+  <text class="attr-text" x="330" y="276" text-anchor="middle">name</text>
+
+  <ellipse class="attribute-blue" cx="92" cy="375" rx="70" ry="25"/>
+  <text class="attr-text" x="92" y="381" text-anchor="middle">gender</text>
+
+  <ellipse class="attribute-blue" cx="78" cy="490" rx="78" ry="25"/>
+  <text class="attr-text" x="78" y="496" text-anchor="middle">student_id</text>
+
+  <ellipse class="attribute-blue" cx="130" cy="625" rx="126" ry="27"/>
+  <text class="attr-text" x="130" y="630" text-anchor="middle">O-Level grades</text>
+
+  <ellipse class="attribute-blue" cx="258" cy="660" rx="116" ry="27"/>
+  <text class="attr-text" x="258" y="665" text-anchor="middle">academic_wish</text>
+
+  <ellipse class="attribute-blue" cx="385" cy="625" rx="105" ry="27"/>
+  <text class="attr-text" x="385" y="630" text-anchor="middle">career_interest</text>
+
+  <ellipse class="attribute-blue" cx="433" cy="333" rx="118" ry="27"/>
+  <text class="attr-text" x="433" y="338" text-anchor="middle">labor_market_view</text>
+
+  <ellipse class="attribute-blue" cx="440" cy="535" rx="66" ry="25"/>
+  <text class="attr-text" x="440" y="541" text-anchor="middle">talent</text>
+
+  <!-- Student Survey Record entity. -->
+  <rect class="entity-blue" x="120" y="420" width="270" height="90" rx="7"/>
+  <text class="entity-text" x="255" y="458" text-anchor="middle">STUDENT SURVEY</text>
+  <text class="entity-text" x="255" y="484" text-anchor="middle">RECORD</text>
+
+  <!-- Engineered Feature Set attributes. -->
+  <ellipse class="attribute-green" cx="760" cy="270" rx="90" ry="27"/>
+  <text class="attr-text pk" x="760" y="275" text-anchor="middle">feature_id (PK)</text>
+
+  <ellipse class="attribute-green" cx="965" cy="270" rx="90" ry="27"/>
+  <text class="attr-text" x="965" y="275" text-anchor="middle">record_id (FK)</text>
+
+  <ellipse class="attribute-green" cx="675" cy="335" rx="102" ry="27"/>
+  <text class="attr-text" x="675" y="340" text-anchor="middle">science_score</text>
+
+  <ellipse class="attribute-green" cx="1090" cy="335" rx="124" ry="27"/>
+  <text class="attr-text" x="1090" y="340" text-anchor="middle">humanities_score</text>
+
+  <ellipse class="attribute-green" cx="635" cy="600" rx="112" ry="27"/>
+  <text class="attr-text" x="635" y="605" text-anchor="middle">language_score</text>
+
+  <ellipse class="attribute-green" cx="620" cy="685" rx="88" ry="27"/>
+  <text class="attr-text" x="620" y="690" text-anchor="middle">tech_score</text>
+
+  <ellipse class="attribute-green" cx="1130" cy="685" rx="120" ry="27"/>
+  <text class="attr-text" x="1130" y="690" text-anchor="middle">commerce_score</text>
+
+  <ellipse class="attribute-green" cx="1120" cy="620" rx="92" ry="27"/>
+  <text class="attr-text" x="1120" y="625" text-anchor="middle">overall_avg</text>
+
+  <!-- Engineered Feature Set entity. -->
+  <rect class="entity-green" x="720" y="420" width="310" height="90" rx="7"/>
+  <text class="entity-text" x="875" y="458" text-anchor="middle">ENGINEERED</text>
+  <text class="entity-text" x="875" y="484" text-anchor="middle">FEATURE SET</text>
+
+  <!-- Model Artifact attributes. -->
+  <ellipse class="attribute-yellow" cx="1280" cy="270" rx="120" ry="27"/>
+  <text class="attr-text" x="1280" y="275" text-anchor="middle">feature_columns</text>
+
+  <ellipse class="attribute-yellow" cx="1495" cy="270" rx="88" ry="27"/>
+  <text class="attr-text pk" x="1495" y="275" text-anchor="middle">model_id (PK)</text>
+
+  <ellipse class="attribute-yellow" cx="1635" cy="340" rx="122" ry="27"/>
+  <text class="attr-text" x="1635" y="345" text-anchor="middle">algorithm_name</text>
+
+  <ellipse class="attribute-yellow" cx="1692" cy="438" rx="78" ry="25"/>
+  <text class="attr-text" x="1692" y="444" text-anchor="middle">model_file</text>
+
+  <ellipse class="attribute-yellow" cx="1692" cy="510" rx="78" ry="25"/>
+  <text class="attr-text" x="1692" y="516" text-anchor="middle">scaler_file</text>
+
+  <ellipse class="attribute-yellow" cx="1605" cy="625" rx="88" ry="25"/>
+  <text class="attr-text" x="1605" y="631" text-anchor="middle">encoder_file</text>
+
+  <ellipse class="attribute-yellow" cx="1420" cy="660" rx="106" ry="27"/>
+  <text class="attr-text" x="1420" y="665" text-anchor="middle">accuracy_score</text>
+
+  <!-- Model Artifact entity. -->
+  <rect class="entity-yellow" x="1330" y="420" width="270" height="90" rx="7"/>
+  <text class="entity-text" x="1465" y="458" text-anchor="middle">MODEL</text>
+  <text class="entity-text" x="1465" y="484" text-anchor="middle">ARTIFACT</text>
+
+  <!-- Prediction Session attributes. -->
+  <ellipse class="attribute-purple" cx="560" cy="804" rx="118" ry="27"/>
+  <text class="attr-text" x="560" y="809" text-anchor="middle">input_grade_set</text>
+
+  <ellipse class="attribute-purple" cx="640" cy="975" rx="92" ry="27"/>
+  <text class="attr-text pk" x="640" y="980" text-anchor="middle">session_id (PK)</text>
+
+  <ellipse class="attribute-purple" cx="800" cy="1035" rx="116" ry="27"/>
+  <text class="attr-text" x="800" y="1040" text-anchor="middle">storage_policy</text>
+
+  <ellipse class="attribute-purple" cx="1010" cy="1035" rx="92" ry="27"/>
+  <text class="attr-text" x="1010" y="1040" text-anchor="middle">generated_at</text>
+
+  <ellipse class="attribute-purple" cx="1120" cy="975" rx="116" ry="27"/>
+  <text class="attr-text" x="1120" y="980" text-anchor="middle">confidence_score</text>
+
+  <ellipse class="attribute-purple" cx="1125" cy="735" rx="126" ry="27"/>
+  <text class="attr-text" x="1125" y="740" text-anchor="middle">predicted_pathway</text>
+
+  <!-- Prediction Session entity. -->
+  <rect class="entity-purple" x="720" y="780" width="310" height="90" rx="7"/>
+  <text class="entity-text" x="875" y="818" text-anchor="middle">PREDICTION</text>
+  <text class="entity-text" x="875" y="844" text-anchor="middle">SESSION</text>
+
+  <!-- Temporary storage note. -->
+  <rect class="note" x="70" y="930" width="410" height="105" rx="8"/>
+  <text class="note-text" x="275" y="963" text-anchor="middle">No permanent student account table is required.</text>
+  <text class="note-text" x="275" y="987" text-anchor="middle">Uploaded report cards are processed temporarily</text>
+  <text class="note-text" x="275" y="1011" text-anchor="middle">and deleted after OCR/recommendation processing.</text>
+</svg>

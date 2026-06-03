@@ -1,0 +1,421 @@
+{% extends "base.html" %}
+{% block title %}Review Extracted Grades{% endblock %}
+
+{% block extra_css %}
+<style>
+  .grade-pill {
+    display:inline-flex; width:38px; height:38px; border-radius:50%;
+    align-items:center; justify-content:center;
+    font-weight:800; font-size:.92rem; color:white; flex-shrink:0;
+  }
+  .grade-A{background:#16a34a} .grade-B{background:#2563eb}
+  .grade-C{background:#7c3aed} .grade-D{background:#b45309}
+  .grade-E{background:#dc2626} .grade-S{background:#ea580c}
+  .grade-F{background:#6b7280} .grade-none{background:#e2e8f0;color:#94a3b8}
+
+  .report-row{
+    border-left:4px solid; border-radius:10px;
+    padding:10px 16px; margin-bottom:8px; background:white;
+  }
+  .auto-badge{background:#dcfce7;color:#166534;font-size:.7rem;padding:2px 8px;border-radius:20px}
+  .manual-badge{background:#fef9c3;color:#92400e;font-size:.7rem;padding:2px 8px;border-radius:20px}
+  .term-chip{font-size:.7rem;padding:2px 8px;border-radius:20px;font-weight:600}
+
+  /* Percentage input with live grade badge */
+  .pct-group { position:relative; }
+  .pct-badge {
+    position:absolute; right:0; top:0; bottom:0;
+    width:42px; border-radius:0 8px 8px 0;
+    display:flex; align-items:center; justify-content:center;
+    font-weight:800; font-size:.82rem; color:white;
+    background:#e2e8f0; color:#64748b; transition:background .2s;
+    pointer-events:none;
+  }
+  .pct-input {
+    padding-right:48px !important;
+    border-radius:8px !important;
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="hero py-4">
+  <div class="container">
+    <h2 class="fw-bold mb-1">
+      <i class="fas fa-check-circle me-2"></i>Review Extracted Grades
+    </h2>
+    <p class="mb-0 opacity-75">
+      Check the grades auto-extracted from your reports, correct any mistakes, then get your result
+    </p>
+  </div>
+</div>
+
+<div class="container my-5">
+
+  <!-- Stats -->
+  <div class="row g-3 mb-4">
+    <div class="col-6 col-md-3">
+      <div class="stat-box">
+        <div class="number" style="color:var(--primary);">
+          {{ uploaded_info | selectattr('file') | list | length }}
+        </div>
+        <div class="label">Reports Uploaded</div>
+      </div>
+    </div>
+    <div class="col-6 col-md-3">
+      <div class="stat-box">
+        <div class="number" style="color:#16a34a;">{{ auto_count }}</div>
+        <div class="label">Auto-Extracted</div>
+      </div>
+    </div>
+    <div class="col-6 col-md-3">
+      <div class="stat-box">
+        <div class="number" style="color:{{ '#dc2626' if (subjects|length - auto_count) > 0 else '#16a34a' }};">
+          {{ subjects|length - auto_count }}
+        </div>
+        <div class="label">Enter Manually</div>
+      </div>
+    </div>
+    <div class="col-6 col-md-3">
+      <div class="stat-box">
+        <div class="number" style="color:#7c3aed;">{{ subjects|length }}</div>
+        <div class="label">Total Subjects</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Per-report extraction results -->
+  <div class="card border-0 shadow-sm rounded-3 mb-4">
+    <div class="card-header-primary rounded-top">
+      <h5 class="mb-0"><i class="fas fa-list me-2"></i>Extraction Results Per Report</h5>
+    </div>
+    <div class="card-body p-3">
+      {% set slot_colors = {'s1':'#1e3a5f','s2':'#b45309','s3t1':'#7c3aed','s3t2':'#6d28d9'} %}
+      {% set slot_keys = ['s1','s2','s3t1','s3t2'] %}
+      {% for info in uploaded_info %}
+      {% set sk = slot_keys[loop.index0] %}
+      <div class="report-row" style="border-color:{{ slot_colors.get(sk,'#94a3b8') }}">
+        <div class="d-flex align-items-center justify-content-between flex-wrap gap-2">
+          <div class="d-flex align-items-center gap-2 flex-wrap">
+            <span style="font-size:1.2rem">{{ '📄' if info.file else '⬜' }}</span>
+            <strong class="small">{{ info.label }}</strong>
+            {% if info.file %}
+              <span class="term-chip" style="background:#eff6ff;color:#1d4ed8;">{{ info.file }}</span>
+              {% if info.report_name %}
+              <span class="term-chip" style="background:#f0fdf4;color:#166534;">
+                <i class="fas fa-user me-1"></i>{{ info.report_name }}
+              </span>
+              {% endif %}
+              {% if info.report_gender %}
+              <span class="term-chip" style="background:#fdf2f8;color:#be185d;">
+                <i class="fas fa-venus-mars me-1"></i>{{ info.report_gender }}
+              </span>
+              {% endif %}
+              {% if info.report_school %}
+              <span class="term-chip" style="background:#eef2ff;color:#3730a3;">
+                <i class="fas fa-school me-1"></i>{{ info.report_school }}
+              </span>
+              {% endif %}
+              {% if info.found > 0 %}
+              <span class="auto-badge">✅ {{ info.found }} grades found</span>
+              {% else %}
+              <span class="manual-badge">⚠️ Could not read — check manually</span>
+              {% endif %}
+            {% else %}
+              <span class="term-chip" style="background:#f1f5f9;color:#64748b;">Not uploaded</span>
+            {% endif %}
+          </div>
+          {% if info.grades %}
+          <div class="d-flex flex-wrap gap-1">
+            {% for sub, grade in info.grades.items() %}
+            <span class="badge rounded-pill" style="background:#e0e7ff;color:#1e3a5f;font-size:.65rem;">
+              {{ sub }}: <strong>{{ grade }}</strong>
+            </span>
+            {% endfor %}
+          </div>
+          {% endif %}
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+
+  <!-- Grade review form -->
+  <form action="/predict" method="POST" id="revPredictForm" novalidate>
+    <input type="hidden" name="student_name" value="{{ student_name }}"/>
+    <input type="hidden" name="gender"       value="{{ gender }}"/>
+    <input type="hidden" name="guardian_email" value="{{ guardian_email }}"/>
+
+    <div class="card border-0 shadow-sm rounded-3 mb-4">
+      <div class="card-header-primary rounded-top">
+        <h5 class="mb-0"><i class="fas fa-pen-to-square me-2"></i>Averaged Grades — Review &amp; Correct</h5>
+        <p class="mb-0 small opacity-75 mt-1">
+          Green = auto-extracted &nbsp;·&nbsp; Yellow = enter manually.
+          Enter each grade as a percentage (0–100).
+        </p>
+      </div>
+      <div class="card-body p-4">
+
+        <div class="alert border-0 py-2 px-3 mb-3"
+             style="background:#f0f9ff;border-radius:10px;border-left:4px solid #0ea5e9;font-size:.78rem;">
+          <i class="fas fa-info-circle me-1 text-primary"></i>
+          <strong>Grading scale (CAMIS 2022+):</strong>
+          A ≥ 80% &nbsp;·&nbsp; B ≥ 75% &nbsp;·&nbsp; C ≥ 70% &nbsp;·&nbsp;
+          D ≥ 65% &nbsp;·&nbsp; E ≥ 60% &nbsp;·&nbsp; S ≥ 50% &nbsp;·&nbsp; F &lt; 50%
+        </div>
+
+        {% set icons = {
+          'Math':'fa-square-root-variable','Physics':'fa-atom',
+          'Chemistry':'fa-flask','Biology':'fa-leaf',
+          'Geography':'fa-earth-africa','History':'fa-landmark',
+          'Entrepreneurship':'fa-lightbulb','English':'fa-book-open',
+          'Kinyarwanda':'fa-flag'
+        } %}
+
+        {# Use real averaged Annual-Total percentages from uploaded PDFs #}
+        <div class="row g-3">
+          {% for subject in subjects %}
+          {% set extracted = averaged.get(subject, '') %}
+          {% set prefill   = averaged_pcts.get(subject, '') %}
+          {% if prefill != '' %}{% set prefill = prefill | round(1) %}{% endif %}
+          <div class="col-6 col-md-4">
+            <div class="p-3 rounded-3"
+                 style="background:{{ '#f0fdf4' if extracted else '#fefce8' }};
+                        border:1.5px solid {{ '#bbf7d0' if extracted else '#fef08a' }};">
+              <div class="d-flex align-items-center gap-2 mb-2">
+                <i class="fas {{ icons.get(subject,'fa-book') }} text-primary" style="font-size:.85rem;"></i>
+                <span class="fw-semibold small">{{ subject }}</span>
+                {% if extracted %}
+                <span class="auto-badge ms-auto">auto · {{ extracted }}</span>
+                {% else %}
+                <span class="manual-badge ms-auto">manual</span>
+                {% endif %}
+              </div>
+              <div class="pct-group">
+                <input type="number" name="{{ subject }}"
+                       id="rev_{{ subject }}"
+                       class="form-control grade-select pct-input"
+                       placeholder="0–100" min="0" max="100" step="1"
+                       value="{{ prefill }}"
+                       oninput="updateRevBadge('{{ subject }}', this.value)"
+                       required/>
+                <div class="pct-badge" id="revbadge_{{ subject }}">
+                  {{ extracted if extracted else '—' }}
+                </div>
+              </div>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+
+        <div class="alert alert-secondary border-0 mt-4 small">
+          <i class="fas fa-info-circle me-1"></i>
+          Values are <strong>averaged</strong> across all uploaded reports.
+          If a grade looks wrong, change the percentage before clicking
+          <strong>Get Result</strong>. The letter badge updates live as you type.
+        </div>
+      </div>
+    </div>
+
+    <!-- Student preferences -->
+    <div class="card border-0 shadow-sm rounded-3 mb-4" data-section="preferences">
+      <div class="card-header-primary rounded-top">
+        <h5 class="mb-0"><i class="fas fa-sliders me-2"></i>Your Personal Preferences</h5>
+        <p class="mb-0 small opacity-75 mt-1">
+          These personalise your recommendation — your passion and goals matter.
+        </p>
+      </div>
+      <div class="card-body p-4">
+        <div class="row g-3">
+          <div class="col-md-6">
+            <label class="form-label fw-semibold small text-uppercase text-secondary">
+              <i class="fas fa-star me-1" style="color:#be185d;"></i>Study Area *
+            </label>
+            <select name="student_wish" class="form-select" required>
+              <option value="">— What do you wish to study? —</option>
+              {% for val, label in wish_options %}
+              <option value="{{ val }}">{{ label }}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <div class="col-md-6">
+            <label class="form-label fw-semibold small text-uppercase text-secondary">
+              <i class="fas fa-briefcase me-1 text-primary"></i>Career Interest *
+            </label>
+            <select name="career_interest" class="form-select" required>
+              <option value="">— What career interests you? —</option>
+              {% for val, label in career_options %}
+              <option value="{{ val }}">{{ label }}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <div class="col-md-6">
+            <label class="form-label fw-semibold small text-uppercase text-secondary">
+              <i class="fas fa-bullseye me-1 text-success"></i>Strongest Talent *
+            </label>
+            <select name="talent" class="form-select" required>
+              <option value="">— What is your strongest talent? —</option>
+              {% for val, label in talent_options %}
+              <option value="{{ val }}">{{ label }}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <div class="col-md-6">
+            <label class="form-label fw-semibold small text-uppercase text-secondary">
+              <i class="fas fa-chart-line me-1 text-warning"></i>Labor Market *
+            </label>
+            <select name="labor_market" class="form-select" required>
+              <option value="">— Does job demand influence you? —</option>
+              {% for val, label in labor_options %}
+              <option value="{{ val }}">{{ label }}</option>
+              {% endfor %}
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="d-flex gap-3 flex-wrap">
+      <button type="submit" class="btn btn-primary btn-lg px-5 fw-bold"
+              onclick="return validateRevForm()">
+        <i class="fas fa-paper-plane me-2"></i>Get Result
+      </button>
+      <a href="/upload" class="btn btn-outline-secondary btn-lg px-4">
+        <i class="fas fa-rotate-left me-2"></i>Re-upload
+      </a>
+      <a href="/" class="btn btn-outline-primary btn-lg px-4">
+        <i class="fas fa-pen-to-square me-2"></i>Enter Manually
+      </a>
+    </div>
+  </form>
+
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+// Rwanda CAMIS grading scale (A≥80, B≥75, C≥70, D≥65, E≥60, S≥50, F<50)
+const GRADE_COLORS = {
+  A: '#16a34a', B: '#2563eb', C: '#7c3aed',
+  D: '#b45309', E: '#dc2626', S: '#ea580c', F: '#6b7280'
+};
+
+function pctToGrade(pct) {
+  if (pct >= 80) return 'A';
+  if (pct >= 75) return 'B';
+  if (pct >= 70) return 'C';
+  if (pct >= 65) return 'D';
+  if (pct >= 60) return 'E';
+  if (pct >= 50) return 'S';
+  return 'F';
+}
+
+function updateRevBadge(subject, val) {
+  const badge = document.getElementById('revbadge_' + subject);
+  if (!badge) return;
+  if (val === '' || isNaN(val)) {
+    badge.textContent = '—';
+    badge.style.background = '#e2e8f0';
+    badge.style.color = '#64748b';
+    return;
+  }
+  const pct = parseFloat(val);
+  if (pct < 0 || pct > 100) {
+    badge.textContent = '!';
+    badge.style.background = '#dc2626';
+    badge.style.color = 'white';
+    return;
+  }
+  const grade = pctToGrade(pct);
+  badge.textContent = grade;
+  badge.style.background = GRADE_COLORS[grade] || '#6b7280';
+  badge.style.color = 'white';
+}
+
+function validateRevForm() {
+  const subjects = {{ subjects | tojson }};
+  const invalid = [];
+  let filledCount = 0, allZero = true;
+
+  subjects.forEach(sub => {
+    const el = document.getElementById('rev_' + sub);
+    if (!el || el.value === '') return;
+    const v = parseFloat(el.value);
+    if (isNaN(v) || v < 0 || v > 100) {
+      invalid.push(sub + ': ' + el.value);
+      return;
+    }
+    filledCount++;
+    if (v > 0) allZero = false;
+  });
+
+  if (invalid.length > 0) {
+    showModal({
+      type: 'danger',
+      title: 'Invalid Marks Entered',
+      subtitle: 'Marks must be between 0 and 100',
+      body: 'The following entries have invalid values. Please enter real percentage marks (0–100):',
+      items: invalid,
+      okText: 'Go Back & Fix'
+    });
+    return false;
+  }
+  if (filledCount === 0) {
+    showModal({
+      type: 'warning',
+      title: 'No Marks Entered',
+      subtitle: 'Please enter at least one subject mark',
+      body: 'Enter percentage marks for the subjects you have results for before getting your recommendation.',
+      okText: 'Go Back & Fill'
+    });
+    return false;
+  }
+  if (allZero) {
+    showModal({
+      type: 'danger',
+      title: 'All Marks Are Zero',
+      subtitle: 'Cannot generate a recommendation',
+      body: 'Every subject has been entered as 0%. Please enter your actual percentage marks.',
+      okText: 'Go Back & Fix'
+    });
+    return false;
+  }
+
+  const missingFields = [];
+  [
+    ['student_wish',    'Study area you wish to pursue'],
+    ['career_interest', 'Career interest'],
+    ['talent',          'Strongest talent / skill'],
+    ['labor_market',    'Labor market preference']
+  ].forEach(([name, label]) => {
+    const el = document.querySelector('[name="' + name + '"]');
+    if (!el || !el.value) missingFields.push(label);
+  });
+  if (missingFields.length > 0) {
+    showModal({
+      type: 'warning',
+      title: 'Please Complete Your Preferences',
+      subtitle: 'Some required preference fields are empty',
+      body: 'Your recommendation depends on your personal goals. Please scroll down to the "Your Personal Preferences" section and fill in the following before continuing:',
+      items: missingFields,
+      okText: '⬇ Go Back & Fill In Preferences'
+    });
+    // Scroll to preferences section so student sees it
+    const prefCard = document.querySelector('[data-section="preferences"]');
+    if (prefCard) prefCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    return false;
+  }
+  return true;
+}
+
+// Initialise badges for pre-filled values on page load
+document.addEventListener('DOMContentLoaded', () => {
+  {% for subject in subjects %}
+  {
+    const inp = document.getElementById('rev_{{ subject }}');
+    if (inp && inp.value) updateRevBadge('{{ subject }}', inp.value);
+  }
+  {% endfor %}
+});
+</script>
+{% endblock %}

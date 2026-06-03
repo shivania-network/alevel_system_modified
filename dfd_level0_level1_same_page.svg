@@ -1,0 +1,198 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1300" height="1500" viewBox="0 0 1300 1500">
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L9,3 z" fill="#000"/>
+    </marker>
+    <style>
+      text { font-family: Arial, Helvetica, sans-serif; fill: #000; }
+      .title { font-size: 22px; font-weight: 700; }
+      .section { font-size: 16px; font-weight: 700; }
+      .box { fill: #fff; stroke: #000; stroke-width: 2; }
+      .process { fill: #fff; stroke: #000; stroke-width: 2; }
+      .main { font-size: 13px; font-weight: 700; }
+      .body { font-size: 11px; }
+      .label { font-size: 10px; }
+      .arrow { stroke: #000; stroke-width: 2; fill: none; marker-end: url(#arrow); }
+    </style>
+  </defs>
+
+  <text class="title" x="650" y="44" text-anchor="middle">Data Flow Diagram - Academic Pathway Recommender</text>
+
+  <!-- Level 0 -->
+  <rect class="box" x="40" y="75" width="1220" height="34"/>
+  <text class="section" x="650" y="98" text-anchor="middle">LEVEL 0: Context Diagram</text>
+
+  <rect class="box" x="65" y="170" width="170" height="70"/>
+  <text class="main" x="150" y="210" text-anchor="middle">Student</text>
+
+  <rect class="box" x="65" y="390" width="170" height="70"/>
+  <text class="main" x="150" y="420" text-anchor="middle">
+    <tspan x="150">Teacher /</tspan>
+    <tspan x="150" dy="17">Guidance Staff</tspan>
+  </text>
+
+  <rect class="box" x="1060" y="280" width="170" height="70"/>
+  <text class="main" x="1145" y="310" text-anchor="middle">
+    <tspan x="1145">Parent /</tspan>
+    <tspan x="1145" dy="17">Guardian</tspan>
+  </text>
+
+  <rect class="process" x="465" y="220" width="370" height="155" rx="12"/>
+  <text x="650" y="255" text-anchor="middle">
+    <tspan class="main" x="650">0</tspan>
+    <tspan class="main" x="650" dy="18">Academic Pathway</tspan>
+    <tspan class="main" x="650" dy="17">Recommendation System</tspan>
+    <tspan class="body" x="650" dy="26">Receives student data, predicts a pathway,</tspan>
+    <tspan class="body" x="650" dy="15">prepares result, and sends notification</tspan>
+  </text>
+
+  <path class="arrow" d="M235 205 L460 280"/>
+  <text class="label" x="335" y="230" text-anchor="middle">
+    <tspan x="335">student details, grades,</tspan>
+    <tspan x="335" dy="13">interests, report cards</tspan>
+  </text>
+  <path class="arrow" d="M650 220 L650 130 L150 130 L150 165"/>
+  <text class="label" x="400" y="118" text-anchor="middle">
+    <tspan x="400">ranked recommendation</tspan>
+    <tspan x="400" dy="13">and print-ready result</tspan>
+  </text>
+  <path class="arrow" d="M235 425 L460 340"/>
+  <text class="label" x="340" y="420" text-anchor="middle">
+    <tspan x="340">student information,</tspan>
+    <tspan x="340" dy="13">uploads, corrections</tspan>
+  </text>
+  <path class="arrow" d="M650 375 L650 505 L150 505 L150 465"/>
+  <text class="label" x="390" y="495" text-anchor="middle">guidance report</text>
+  <path class="arrow" d="M835 298 L1055 315"/>
+  <text class="label" x="945" y="290" text-anchor="middle">result-ready email notification</text>
+
+  <!-- Level 1 -->
+  <rect class="box" x="40" y="575" width="1220" height="34"/>
+  <text class="section" x="650" y="598" text-anchor="middle">LEVEL 1: Process Diagram</text>
+
+  <rect class="box" x="40" y="700" width="160" height="65"/>
+  <text class="main" x="120" y="738" text-anchor="middle">Student</text>
+
+  <rect class="box" x="40" y="1110" width="160" height="65"/>
+  <text class="main" x="120" y="1138" text-anchor="middle">
+    <tspan x="120">Teacher /</tspan>
+    <tspan x="120" dy="17">Guidance Staff</tspan>
+  </text>
+
+  <rect class="box" x="1085" y="1270" width="150" height="65"/>
+  <text class="main" x="1160" y="1298" text-anchor="middle">
+    <tspan x="1160">Parent /</tspan>
+    <tspan x="1160" dy="17">Guardian</tspan>
+  </text>
+
+  <rect class="process" x="260" y="690" width="210" height="80" rx="10"/>
+  <text x="365" y="716" text-anchor="middle">
+    <tspan class="main" x="365">1.0 Capture Inputs</tspan>
+    <tspan class="body" x="365" dy="17">Name, gender, grades,</tspan>
+    <tspan class="body" x="365" dy="14">interests, guardian email</tspan>
+  </text>
+
+  <rect class="process" x="260" y="865" width="210" height="80" rx="10"/>
+  <text x="365" y="891" text-anchor="middle">
+    <tspan class="main" x="365">2.0 Validate / OCR</tspan>
+    <tspan class="body" x="365" dy="17">Validate grades and</tspan>
+    <tspan class="body" x="365" dy="14">extract uploaded reports</tspan>
+  </text>
+
+  <rect class="process" x="535" y="865" width="220" height="80" rx="10"/>
+  <text x="645" y="888" text-anchor="middle">
+    <tspan class="main" x="645">3.0 Prepare Data</tspan>
+    <tspan class="main" x="645" dy="16">and Build Features</tspan>
+    <tspan class="body" x="645" dy="16">Encode categories and</tspan>
+    <tspan class="body" x="645" dy="14">compute group scores</tspan>
+  </text>
+
+  <rect class="process" x="820" y="865" width="210" height="80" rx="10"/>
+  <text x="925" y="891" text-anchor="middle">
+    <tspan class="main" x="925">4.0 Predict Pathway</tspan>
+    <tspan class="body" x="925" dy="17">Random Forest returns</tspan>
+    <tspan class="body" x="925" dy="14">class probabilities</tspan>
+  </text>
+
+  <rect class="process" x="820" y="1065" width="210" height="80" rx="10"/>
+  <text x="925" y="1090" text-anchor="middle">
+    <tspan class="main" x="925">5.0 Present / Print Results</tspan>
+    <tspan class="body" x="925" dy="17">Ranked pathways, careers,</tspan>
+    <tspan class="body" x="925" dy="14">confidence, printout</tspan>
+  </text>
+
+  <rect class="process" x="820" y="1260" width="210" height="80" rx="10"/>
+  <text x="925" y="1283" text-anchor="middle">
+    <tspan class="main" x="925">6.0 Send Email</tspan>
+    <tspan class="main" x="925" dy="16">Notification</tspan>
+    <tspan class="body" x="925" dy="16">Notify parent/guardian</tspan>
+    <tspan class="body" x="925" dy="14">that result is ready</tspan>
+  </text>
+
+  <!-- Data stores -->
+  <g>
+    <path class="box" d="M535 695 C535 675,755 675,755 695 L755 745 C755 765,535 765,535 745 Z"/>
+    <path d="M535 695 C535 715,755 715,755 695" stroke="#000" stroke-width="2" fill="none"/>
+    <text x="645" y="715" text-anchor="middle">
+      <tspan class="main" x="645">D1 Survey Dataset</tspan>
+      <tspan class="body" x="645" dy="15">training records</tspan>
+    </text>
+  </g>
+  <g>
+    <path class="box" d="M820 695 C820 675,1030 675,1030 695 L1030 745 C1030 765,820 765,820 745 Z"/>
+    <path d="M820 695 C820 715,1030 715,1030 695" stroke="#000" stroke-width="2" fill="none"/>
+    <text x="925" y="715" text-anchor="middle">
+      <tspan class="main" x="925">D2 Model Artifacts</tspan>
+      <tspan class="body" x="925" dy="15">model, scaler, encoder</tspan>
+    </text>
+  </g>
+  <g>
+    <path class="box" d="M260 1040 C260 1020,470 1020,470 1040 L470 1090 C470 1110,260 1110,260 1090 Z"/>
+    <path d="M260 1040 C260 1060,470 1060,470 1040" stroke="#000" stroke-width="2" fill="none"/>
+    <text x="365" y="1060" text-anchor="middle">
+      <tspan class="main" x="365">D3 Temporary Upload Store</tspan>
+      <tspan class="body" x="365" dy="15">PDF/image removed after OCR</tspan>
+    </text>
+  </g>
+  <g>
+    <path class="box" d="M535 1275 C535 1255,755 1255,755 1275 L755 1325 C755 1345,535 1345,535 1325 Z"/>
+    <path d="M535 1275 C535 1295,755 1295,755 1275" stroke="#000" stroke-width="2" fill="none"/>
+    <text x="645" y="1295" text-anchor="middle">
+      <tspan class="main" x="645">D4 SMTP Settings</tspan>
+      <tspan class="body" x="645" dy="15">email server configuration</tspan>
+    </text>
+  </g>
+
+  <!-- Level 1 flows -->
+  <path class="arrow" d="M200 732 L255 730"/>
+  <text class="label" x="230" y="704" text-anchor="middle">
+    <tspan x="230">student details, grades,</tspan>
+    <tspan x="230" dy="12">interests, guardian email</tspan>
+  </text>
+  <path class="arrow" d="M365 770 L365 860"/>
+  <text class="label" x="430" y="820" text-anchor="middle">submitted form / report files</text>
+  <path class="arrow" d="M470 905 L530 905"/>
+  <text class="label" x="500" y="887" text-anchor="middle">validated grades / OCR text</text>
+  <path class="arrow" d="M645 765 L645 860"/>
+  <text class="label" x="700" y="815" text-anchor="middle">training data</text>
+  <path class="arrow" d="M755 905 L815 905"/>
+  <text class="label" x="785" y="887" text-anchor="middle">feature vector</text>
+  <path class="arrow" d="M925 765 L925 860"/>
+  <text class="label" x="1000" y="815" text-anchor="middle">model artifacts</text>
+  <path class="arrow" d="M925 945 L925 1060"/>
+  <text class="label" x="1002" y="1005" text-anchor="middle">pathway probabilities</text>
+  <path class="arrow" d="M365 945 L365 1020"/>
+  <text class="label" x="430" y="988" text-anchor="middle">uploaded PDF/image</text>
+  <path class="arrow" d="M260 1075 L235 1075 L235 905 L255 905"/>
+  <text class="label" x="220" y="990" text-anchor="middle">file for OCR</text>
+  <path class="arrow" d="M820 1105 L205 1142"/>
+  <text class="label" x="505" y="1160" text-anchor="middle">guidance report</text>
+  <path class="arrow" d="M925 1145 L925 1450 L120 1450 L120 770"/>
+  <text class="label" x="520" y="1438" text-anchor="middle">ranked result / printout</text>
+  <path class="arrow" d="M925 1145 L925 1255"/>
+  <text class="label" x="990" y="1205" text-anchor="middle">result-ready event</text>
+  <path class="arrow" d="M755 1300 L815 1300"/>
+  <text class="label" x="785" y="1280" text-anchor="middle">SMTP configuration</text>
+  <path class="arrow" d="M1030 1300 L1080 1302"/>
+  <text class="label" x="1070" y="1260" text-anchor="middle">email notification</text>
+</svg>

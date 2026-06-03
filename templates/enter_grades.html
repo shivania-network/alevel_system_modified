@@ -1,0 +1,625 @@
+{% extends "base.html" %}
+{% block title %}Enter Grades{% endblock %}
+
+{% block extra_css %}
+<style>
+  /* ── Grade input cell ── */
+  .yr-input {
+    width: 100%;
+    text-align: center;
+    border: 1.5px solid #dee2e6;
+    border-radius: 8px;
+    font-size: .88rem;
+    padding: 7px 4px;
+    transition: border-color .2s, box-shadow .2s;
+    background: #fff;
+  }
+  .yr-input:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(30,58,95,.1);
+    outline: none;
+  }
+  .yr-input::placeholder { color: #adb5bd; }
+
+  /* ── Average badge ── */
+  .avg-badge {
+    display: block;
+    text-align: center;
+    font-weight: 700;
+    font-size: .78rem;
+    border-radius: 8px;
+    padding: 6px 4px;
+    background: #e9ecef;
+    color: #6c757d;
+    transition: background .25s, color .25s;
+    white-space: nowrap;
+  }
+
+  /* ── Subject row ── */
+  .subject-row {
+    background: #fff;
+    border-radius: 10px;
+    border: 1px solid #e9ecef;
+    padding: 10px 14px;
+    margin-bottom: 6px;
+    transition: border-color .2s, box-shadow .2s;
+  }
+  .subject-row:hover {
+    border-color: #adb5bd;
+    box-shadow: 0 2px 8px rgba(0,0,0,.06);
+  }
+
+  /* ── Column header labels ── */
+  .col-header {
+    font-size: .7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .5px;
+    color: #6c757d;
+    text-align: center;
+  }
+
+  /* ── Progress bar ── */
+  .progress-xs { height: 6px; border-radius: 3px; }
+
+  /* ── Section pill ── */
+  .section-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(30,58,95,.08);
+    color: var(--primary);
+    font-weight: 700;
+    font-size: .78rem;
+    border-radius: 50px;
+    padding: 4px 14px;
+  }
+
+  /* ── Sidebar sticky ── */
+  @media (min-width: 992px) {
+    .sidebar-sticky { position: sticky; top: 80px; }
+  }
+
+</style>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+const GRADE_COLORS = {
+  A:'#198754', B:'#0d6efd', C:'#6f42c1',
+  D:'#fd7e14', E:'#dc3545', S:'#e85d04', F:'#6c757d'
+};
+
+function pctToGrade(pct) {
+  if (pct >= 80) return 'A';
+  if (pct >= 75) return 'B';
+  if (pct >= 70) return 'C';
+  if (pct >= 65) return 'D';
+  if (pct >= 60) return 'E';
+  if (pct >= 50) return 'S';
+  return 'F';
+}
+
+function validEmail(value) {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
+}
+
+function recalcSubject(sub) {
+  let sum = 0, count = 0;
+  ['s1','s2','s3'].forEach(yr => {
+    const el = document.getElementById('inp_' + yr + '_' + sub);
+    if (!el) return;
+    const v = parseFloat(el.value);
+    if (!isNaN(v) && v >= 0 && v <= 100) { sum += v; count++; }
+  });
+
+  const avgEl = document.getElementById('avg_' + sub);
+  const hidEl = document.getElementById('hid_' + sub);
+  const barEl = document.getElementById('bar_' + sub);
+
+  if (count === 0) {
+    avgEl.textContent = '—';
+    avgEl.style.background = '#e9ecef';
+    avgEl.style.color = '#6c757d';
+    hidEl.value = '';
+    if (barEl) { barEl.style.width = '0%'; barEl.style.background = '#dee2e6'; }
+    return;
+  }
+
+  const avg = sum / count;
+  const gr  = pctToGrade(avg);
+  avgEl.textContent = gr + ' (' + Math.round(avg) + '%)';
+  avgEl.style.background = GRADE_COLORS[gr];
+  avgEl.style.color = '#fff';
+  hidEl.value = avg.toFixed(1);
+  if (barEl) { barEl.style.width = avg + '%'; barEl.style.background = GRADE_COLORS[gr]; }
+  updateProgress();
+}
+
+function updateProgress() {
+  const subjects = {{ subjects | tojson }};
+  let filled = 0;
+  subjects.forEach(sub => { if (document.getElementById('hid_' + sub).value !== '') filled++; });
+  const pct = Math.round(filled / subjects.length * 100);
+  const bar = document.getElementById('progress_bar');
+  const lbl = document.getElementById('progress_lbl');
+  if (bar) { bar.style.width = pct + '%'; bar.setAttribute('aria-valuenow', pct); }
+  if (lbl) lbl.textContent = filled + ' of {{ subjects|length }} subjects averaged';
+}
+
+function onInput(yr, sub) {
+  recalcSubject(sub);
+  const inp = document.getElementById('inp_' + yr + '_' + sub);
+  const hid = document.getElementById('hid_' + yr + '_' + sub);
+  if (inp && hid) hid.value = inp.value;
+}
+
+function clearAll() {
+  const subjects = {{ subjects | tojson }};
+  subjects.forEach(sub => {
+    ['s1','s2','s3'].forEach(yr => {
+      const el = document.getElementById('inp_' + yr + '_' + sub);
+      if (el) el.value = '';
+      const hid = document.getElementById('hid_' + yr + '_' + sub);
+      if (hid) hid.value = '';
+    });
+    recalcSubject(sub);
+  });
+  updateProgress();
+}
+
+function validateForm() {
+  const subjects = {{ subjects | tojson }};
+  let filledCount = 0, allZero = true;
+
+  // Check for invalid values (negative or > 100)
+  let invalidSubjects = [];
+  subjects.forEach(sub => {
+    ['s1','s2','s3'].forEach(yr => {
+      const el = document.getElementById('inp_' + yr + '_' + sub);
+      if (!el || el.value === '') return;
+      const v = parseFloat(el.value);
+      if (v < 0 || v > 100) invalidSubjects.push(sub + ' (' + yr.toUpperCase() + ': ' + el.value + ')');
+    });
+  });
+  if (invalidSubjects.length > 0) {
+    showModal({ type:'danger', title:'Invalid Marks Entered',
+      subtitle:'Marks must be between 0 and 100',
+      body:'The following entries have invalid values. Please enter real percentage marks (0–100):',
+      items: invalidSubjects,
+      okText:'Go Back & Fix' });
+    return false;
+  }
+
+  subjects.forEach(sub => {
+    const v = parseFloat(document.getElementById('hid_' + sub).value);
+    if (!isNaN(v)) { filledCount++; if (v > 0) allZero = false; }
+  });
+  if (filledCount === 0) {
+    showModal({ type:'warning', title:'No Marks Entered',
+      subtitle:'Please enter at least one subject mark',
+      body:'Enter percentage marks for the subjects you have results for. Even partial data will produce a useful recommendation.',
+      okText:'Go Back & Fill' });
+    return false;
+  }
+  if (allZero) {
+    showModal({ type:'danger', title:'All Marks Are Zero',
+      subtitle:'Cannot generate a recommendation',
+      body:'Every subject has been entered as 0%. Please enter your actual percentage marks.',
+      okText:'Go Back & Fix' });
+    return false;
+  }
+
+  const missingFields = [];
+  const nameEl = document.querySelector('[name="student_name"]');
+  if (!nameEl || !nameEl.value.trim()) missingFields.push('Student full name');
+  const guardianEmailEl = document.querySelector('[name="guardian_email"]');
+  if (!guardianEmailEl || !guardianEmailEl.value.trim()) {
+    missingFields.push('Parent/Guardian email');
+  } else if (!validEmail(guardianEmailEl.value.trim())) {
+    showModal({ type:'warning', title:'Invalid Parent/Guardian Email',
+      subtitle:'Please check the email address',
+      body:'Enter a valid parent or guardian email address before getting the result.',
+      okText:'Go Back & Fix' });
+    return false;
+  }
+  const genderEl = document.querySelector('[name="gender"]');
+  if (!genderEl || !genderEl.value) missingFields.push('Gender');
+  [
+    ['student_wish',    'Study area you wish to pursue'],
+    ['career_interest', 'Career interest'],
+    ['talent',          'Strongest talent / skill'],
+    ['labor_market',    'Labor market preference']
+  ].forEach(([name, label]) => {
+    const el = document.querySelector('[name="' + name + '"]');
+    if (!el || !el.value) missingFields.push(label);
+  });
+  if (missingFields.length > 0) {
+    // Check if any preference field is missing (not just name/gender)
+    const prefFields = ['student_wish','career_interest','talent','labor_market'];
+    const hasPrefMissing = prefFields.some(n => {
+      const el = document.querySelector('[name="' + n + '"]');
+      return !el || !el.value;
+    });
+    showModal({ type:'warning',
+      title: hasPrefMissing ? 'Please Complete Your Preferences' : 'Please Complete All Required Fields',
+      subtitle: hasPrefMissing ? 'Some preference fields are empty' : 'Some information is missing',
+      body: hasPrefMissing
+        ? 'Your recommendation depends on your goals and interests. Please scroll to the "Personal Preferences" section and fill in the following:'
+        : 'Fill in every required field before getting your result:',
+      items: missingFields,
+      okText: hasPrefMissing ? '⬇ Go Back & Fill In Preferences' : 'Go Back & Fill'
+    });
+    if (hasPrefMissing) {
+      const prefCard = document.querySelector('[data-section="preferences"]');
+      if (prefCard) prefCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+    return false;
+  }
+
+  subjects.forEach(sub => {
+    const hidEl = document.getElementById('hid_' + sub);
+    if (hidEl.value === '' || isNaN(parseFloat(hidEl.value))) hidEl.value = '0';
+  });
+  return true;
+}
+
+window.addEventListener('DOMContentLoaded', updateProgress);
+</script>
+{% endblock %}
+
+{% block content %}
+
+<!-- ── Page header ── -->
+<div class="py-4" style="background:var(--primary);">
+  <div class="container">
+    <nav aria-label="breadcrumb" class="mb-2">
+      <ol class="breadcrumb mb-0" style="font-size:.8rem;">
+        <li class="breadcrumb-item">
+          <a href="/" class="text-white text-opacity-75 text-decoration-none">Home</a>
+        </li>
+        <li class="breadcrumb-item active text-white">Enter Grades</li>
+      </ol>
+    </nav>
+    <h1 class="text-white fw-bold mb-1 fs-4">
+      <i class="fas fa-pen-to-square me-2 text-white text-opacity-75"></i>
+      Enter Your O-Level Grades
+    </h1>
+    <p class="text-white text-opacity-75 mb-0 small">
+      Fill in your marks for S1, S2 and S3 — the system calculates your 3-year average automatically
+    </p>
+  </div>
+</div>
+
+<!-- ── Main content ── -->
+<div class="container py-4">
+  <form action="/predict" method="POST" id="predictForm" novalidate>
+
+    <!-- Hidden averaged + per-year values -->
+    {% for subject in subjects %}
+    <input type="hidden" name="{{ subject }}" id="hid_{{ subject }}" value="">
+    {% for yr in ['s1','s2','s3'] %}
+    <input type="hidden" name="{{ yr }}_{{ subject }}" id="hid_{{ yr }}_{{ subject }}" value="">
+    {% endfor %}
+    {% endfor %}
+
+    <div class="row g-4">
+
+      <!-- ════════════════════════════════════════════════════
+           LEFT COLUMN — Student info + Grade entry
+           ════════════════════════════════════════════════════ -->
+      <div class="col-lg-8">
+
+        <!-- ── Student Information ── -->
+        <div class="card border-0 shadow-sm rounded-3 mb-4">
+          <div class="card-body p-4">
+            <div class="d-flex align-items-center gap-2 mb-3">
+              <span class="section-pill">
+                <i class="fas fa-user"></i> Student Information
+              </span>
+            </div>
+            <div class="row g-3">
+              <div class="col-lg-5 col-md-6">
+                <label class="form-label fw-semibold small text-uppercase text-secondary ls-1">
+                  Full Name <span class="text-danger">*</span>
+                </label>
+                <div class="input-group">
+                  <span class="input-group-text bg-light border-end-0">
+                    <i class="fas fa-user-graduate text-secondary"></i>
+                  </span>
+                  <input type="text" name="student_name"
+                         class="form-control border-start-0 ps-0"
+                         placeholder="e.g. UWIMANA Alice" required/>
+                </div>
+              </div>
+              <div class="col-lg-3 col-md-6">
+                <label class="form-label fw-semibold small text-uppercase text-secondary">
+                  Gender <span class="text-danger">*</span>
+                </label>
+                <div class="input-group">
+                  <span class="input-group-text bg-light border-end-0">
+                    <i class="fas fa-venus-mars text-secondary"></i>
+                  </span>
+                  <select name="gender" class="form-select border-start-0" required>
+                    <option value="">— Select —</option>
+                    <option value="0">Female</option>
+                    <option value="1">Male</option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-lg-4">
+                <label class="form-label fw-semibold small text-uppercase text-secondary">
+                  Parent/Guardian Email <span class="text-danger">*</span>
+                </label>
+                <div class="input-group">
+                  <span class="input-group-text bg-light border-end-0">
+                    <i class="fas fa-envelope text-secondary"></i>
+                  </span>
+                  <input type="email" name="guardian_email"
+                         class="form-control border-start-0 ps-0"
+                         placeholder="parent@example.com" required/>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── O-Level Marks ── -->
+        <div class="card border-0 shadow-sm rounded-3 mb-4">
+          <div class="card-body p-4">
+
+            <!-- Section header -->
+            <div class="d-flex align-items-start justify-content-between flex-wrap gap-2 mb-3">
+              <div>
+                <span class="section-pill mb-2">
+                  <i class="fas fa-percent"></i> O-Level Subject Marks (%)
+                </span>
+                <p class="text-muted small mb-0">
+                  Enter percentage marks for S1, S2 and S3. Leave blank if not available.
+                  The system averages only the years you provide.
+                </p>
+              </div>
+              <span class="badge bg-light text-secondary border" style="font-size:.72rem;">
+                A≥80 · B≥75 · C≥70 · D≥65 · E≥60 · S≥50 · F&lt;50
+              </span>
+            </div>
+
+            <!-- Progress indicator -->
+            <div class="bg-light rounded-3 p-3 mb-4 border">
+              <div class="d-flex justify-content-between align-items-center mb-1">
+                <span class="small fw-semibold" style="color:var(--primary);">
+                  <i class="fas fa-circle-check me-1 text-success"></i>
+                  Subjects with averages calculated
+                </span>
+                <span class="badge bg-primary rounded-pill" id="progress_lbl">0 of {{ subjects|length }} subjects</span>
+              </div>
+              <div class="progress progress-xs" role="progressbar"
+                   aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+                <div class="progress-bar bg-primary" id="progress_bar"
+                     style="width:0%;transition:width .4s;"></div>
+              </div>
+              <p class="text-muted mb-0 mt-2" style="font-size:.75rem;">
+                <i class="fas fa-lightbulb me-1 text-warning"></i>
+                Missing subjects are treated as 0 — the recommendation focuses on your best subjects.
+              </p>
+            </div>
+
+            <!-- ── DESKTOP: all 3 years side by side ── -->
+            <div class="d-none d-md-block">
+              <!-- Column headers -->
+              <div class="row g-0 mb-2 px-2">
+                <div class="col-5 col-header text-start ps-1">Subject</div>
+                <div class="col col-header">S1 %</div>
+                <div class="col col-header">S2 %</div>
+                <div class="col col-header">S3 %</div>
+                <div class="col col-header">3-Yr Avg</div>
+              </div>
+
+              {% set icons = {
+                'Math':'fa-square-root-variable','Physics':'fa-atom',
+                'Chemistry':'fa-flask','Biology':'fa-leaf',
+                'Geography':'fa-earth-africa','History':'fa-landmark',
+                'Entrepreneurship':'fa-lightbulb','English':'fa-book-open',
+                'Kinyarwanda':'fa-flag','French':'fa-globe','Kiswahili':'fa-language'
+              } %}
+
+              {% for subject in subjects %}
+              <div class="subject-row">
+                <div class="row g-2 align-items-center">
+                  <!-- Subject name -->
+                  <div class="col-5">
+                    <div class="d-flex align-items-center gap-2">
+                      <i class="fas {{ icons.get(subject,'fa-book') }} text-primary"
+                         style="width:16px;font-size:.85rem;"></i>
+                      <div>
+                        <span class="fw-semibold" style="font-size:.88rem;">{{ subject }}</span>
+                        <div class="progress progress-xs mt-1" style="max-width:120px;">
+                          <div class="progress-bar" id="bar_{{ subject }}"
+                               style="width:0%;transition:width .3s;"></div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- S1 -->
+                  <div class="col">
+                    <input type="number" id="inp_s1_{{ subject }}"
+                           class="yr-input" placeholder="—"
+                           min="0" max="100" step="0.1"
+                           oninput="onInput('s1','{{ subject }}')"/>
+                  </div>
+                  <!-- S2 -->
+                  <div class="col">
+                    <input type="number" id="inp_s2_{{ subject }}"
+                           class="yr-input" placeholder="—"
+                           min="0" max="100" step="0.1"
+                           oninput="onInput('s2','{{ subject }}')"/>
+                  </div>
+                  <!-- S3 -->
+                  <div class="col">
+                    <input type="number" id="inp_s3_{{ subject }}"
+                           class="yr-input" placeholder="—"
+                           min="0" max="100" step="0.1"
+                           oninput="onInput('s3','{{ subject }}')"/>
+                  </div>
+                  <!-- Average -->
+                  <div class="col">
+                    <div class="avg-badge" id="avg_{{ subject }}">—</div>
+                  </div>
+                </div>
+              </div>
+              {% endfor %}
+            </div>
+
+            <!-- ── MOBILE: Bootstrap pill tabs ── -->
+            <div class="d-md-none">
+              <ul class="nav nav-pills nav-fill mb-3 gap-1" role="tablist">
+                {% for yr, lbl in [('s1','Senior 1'),('s2','Senior 2'),('s3','Senior 3')] %}
+                <li class="nav-item" role="presentation">
+                  <button class="nav-link fw-semibold {% if yr=='s1' %}active{% endif %}"
+                          id="tab-{{ yr }}" data-bs-toggle="pill"
+                          data-bs-target="#pane-{{ yr }}" type="button" role="tab">
+                    {{ lbl }}
+                  </button>
+                </li>
+                {% endfor %}
+              </ul>
+              <div class="tab-content">
+                {% for yr, lbl in [('s1','Senior 1'),('s2','Senior 2'),('s3','Senior 3')] %}
+                <div class="tab-pane fade {% if yr=='s1' %}show active{% endif %}"
+                     id="pane-{{ yr }}" role="tabpanel">
+                  <div class="alert alert-info border-0 py-2 px-3 mb-3 small">
+                    <i class="fas fa-circle-info me-1"></i>
+                    <strong>{{ lbl }}</strong> — Enter percentage marks (0–100)
+                  </div>
+                  {% for subject in subjects %}
+                  <div class="subject-row">
+                    <div class="d-flex align-items-center justify-content-between gap-3">
+                      <span class="fw-semibold small">
+                        <i class="fas {{ icons.get(subject,'fa-book') }} me-2 text-primary"
+                           style="width:14px;"></i>{{ subject }}
+                      </span>
+                      <div class="d-flex align-items-center gap-2">
+                        <input type="number" style="width:80px;"
+                               class="yr-input" placeholder="0–100"
+                               min="0" max="100" step="0.1"
+                               oninput="
+                                 document.getElementById('inp_{{ yr }}_{{ subject }}').value=this.value;
+                                 onInput('{{ yr }}','{{ subject }}');"/>
+                        <div class="avg-badge" style="min-width:72px;font-size:.75rem;">—</div>
+                      </div>
+                    </div>
+                  </div>
+                  {% endfor %}
+                </div>
+                {% endfor %}
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+
+      <!-- ════════════════════════════════════════════════════
+           RIGHT COLUMN — Preferences + Submit (sticky)
+           ════════════════════════════════════════════════════ -->
+      <div class="col-lg-4">
+        <div class="sidebar-sticky">
+
+          <!-- ── Preferences ── -->
+          <div class="card border-0 shadow-sm rounded-3 mb-3" data-section="preferences">
+            <div class="card-body p-4">
+              <span class="section-pill mb-3 d-inline-flex">
+                <i class="fas fa-sliders"></i> Your Preferences
+              </span>
+              <p class="text-muted small mb-4">
+                These personalise your recommendation beyond grades alone.
+              </p>
+
+              <!-- Wish -->
+              <div class="mb-3">
+                <label class="form-label fw-semibold small text-uppercase text-secondary">
+                  <i class="fas fa-star me-1" style="color:#be185d;"></i>
+                  Study Area <span class="text-danger">*</span>
+                </label>
+                <select name="student_wish" class="form-select" required>
+                  <option value="">— What do you wish to study? —</option>
+                  {% for val, label in wish_options %}
+                  <option value="{{ val }}">{{ label }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+
+              <!-- Career -->
+              <div class="mb-3">
+                <label class="form-label fw-semibold small text-uppercase text-secondary">
+                  <i class="fas fa-briefcase me-1 text-primary"></i>
+                  Career Interest <span class="text-danger">*</span>
+                </label>
+                <select name="career_interest" class="form-select" required>
+                  <option value="">— What career interests you? —</option>
+                  {% for val, label in career_options %}
+                  <option value="{{ val }}">{{ label }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+
+              <!-- Talent -->
+              <div class="mb-3">
+                <label class="form-label fw-semibold small text-uppercase text-secondary">
+                  <i class="fas fa-bullseye me-1 text-success"></i>
+                  Strongest Talent <span class="text-danger">*</span>
+                </label>
+                <select name="talent" class="form-select" required>
+                  <option value="">— What is your strongest talent? —</option>
+                  {% for val, label in talent_options %}
+                  <option value="{{ val }}">{{ label }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+
+              <!-- Labor market -->
+              <div class="mb-0">
+                <label class="form-label fw-semibold small text-uppercase text-secondary">
+                  <i class="fas fa-chart-line me-1 text-warning"></i>
+                  Labor Market <span class="text-danger">*</span>
+                </label>
+                <select name="labor_market" class="form-select" required>
+                  <option value="">— Does job demand influence you? —</option>
+                  {% for val, label in labor_options %}
+                  <option value="{{ val }}">{{ label }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <!-- ── Submit ── -->
+          <div class="card border-0 shadow-sm rounded-3">
+            <div class="card-body p-4">
+              <button type="submit" class="btn btn-primary w-100 btn-lg fw-bold mb-2"
+                      onclick="return validateForm()">
+                <i class="fas fa-paper-plane me-2"></i>Get Result
+              </button>
+              <button type="button" class="btn btn-outline-secondary w-100 mb-3"
+                      onclick="clearAll()">
+                <i class="fas fa-rotate-left me-2"></i>Clear All
+              </button>
+              <div class="d-flex align-items-start gap-2 p-3 rounded-3 bg-light border">
+                <i class="fas fa-shield-halved text-success mt-1 flex-shrink-0"></i>
+                <p class="text-muted mb-0" style="font-size:.78rem;">
+                  No data is stored. Your marks are processed instantly and
+                  discarded after the result is shown.
+                </p>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </form>
+</div>
+
+{% endblock %}

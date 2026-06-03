@@ -1,0 +1,292 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1500" height="1000" viewBox="0 0 1500 1000">
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L9,3 z" fill="#202124"/>
+    </marker>
+    <style>
+      text {
+        font-family: Arial, Helvetica, sans-serif;
+        fill: #101828;
+      }
+      .title {
+        font-size: 28px;
+        font-weight: 700;
+      }
+      .subtitle {
+        font-size: 17px;
+        font-weight: 600;
+        fill: #475467;
+      }
+      .entity {
+        fill: #eaf4ff;
+        stroke: #2f65b0;
+        stroke-width: 2.7;
+        rx: 5;
+      }
+      .entity-green {
+        fill: #e8f5e9;
+        stroke: #4c9a4f;
+        stroke-width: 2.7;
+        rx: 5;
+      }
+      .process-blue {
+        fill: #dcecff;
+        stroke: #2f65b0;
+        stroke-width: 2.4;
+        rx: 8;
+      }
+      .process-green {
+        fill: #e4f5df;
+        stroke: #4f8d4b;
+        stroke-width: 2.4;
+        rx: 8;
+      }
+      .process-yellow {
+        fill: #fff2cc;
+        stroke: #c29922;
+        stroke-width: 2.4;
+        rx: 8;
+      }
+      .process-purple {
+        fill: #efe7ff;
+        stroke: #6f3fa3;
+        stroke-width: 2.4;
+        rx: 8;
+      }
+      .process-pink {
+        fill: #fde7ef;
+        stroke: #c45a7b;
+        stroke-width: 2.4;
+        rx: 8;
+      }
+      .process-teal {
+        fill: #e0f7f4;
+        stroke: #3f9b94;
+        stroke-width: 2.4;
+        rx: 8;
+      }
+      .store {
+        fill: #fff7d6;
+        stroke: #9b7b14;
+        stroke-width: 2.2;
+      }
+      .flow {
+        stroke: #202124;
+        stroke-width: 2.1;
+        fill: none;
+        marker-end: url(#arrow);
+      }
+      .label-bg {
+        fill: #ffffff;
+        stroke: #d0d5dd;
+        stroke-width: 1;
+        rx: 3;
+      }
+      .label {
+        font-size: 12px;
+        font-weight: 600;
+        fill: #111827;
+      }
+      .box-title {
+        font-size: 14px;
+        font-weight: 700;
+      }
+      .box-body {
+        font-size: 12px;
+      }
+      .entity-label {
+        fill: #174a7c;
+        font-size: 16px;
+        font-weight: 700;
+      }
+      .store-label {
+        font-size: 13px;
+        font-weight: 700;
+      }
+      .note {
+        fill: #f9fafb;
+        stroke: #d0d5dd;
+        stroke-width: 1.5;
+        rx: 8;
+      }
+      .note-text {
+        font-size: 13px;
+        fill: #475467;
+      }
+    </style>
+  </defs>
+
+  <rect x="0" y="0" width="1500" height="1000" fill="#ffffff"/>
+
+  <text class="title" x="750" y="42" text-anchor="middle">DFD LEVEL 1</text>
+  <text class="subtitle" x="750" y="70" text-anchor="middle">Academic Pathway Recommendation System</text>
+
+  <!-- External entities -->
+  <rect class="entity-green" x="60" y="125" width="175" height="82"/>
+  <text class="entity-label" x="147.5" y="174" text-anchor="middle">STUDENT</text>
+
+  <rect class="entity-green" x="60" y="735" width="175" height="86"/>
+  <text class="entity-label" x="147.5" y="770" text-anchor="middle">TEACHER /</text>
+  <text class="entity-label" x="147.5" y="794" text-anchor="middle">GUIDANCE STAFF</text>
+
+  <rect class="entity" x="1280" y="730" width="175" height="86"/>
+  <text class="entity-label" x="1367.5" y="765" text-anchor="middle">PARENT /</text>
+  <text class="entity-label" x="1367.5" y="789" text-anchor="middle">GUARDIAN</text>
+
+  <!-- Processes -->
+  <rect class="process-blue" x="430" y="100" width="320" height="80"/>
+  <text class="box-title" x="590" y="123" text-anchor="middle">1.1 Capture Student Inputs</text>
+  <text class="box-body" x="590" y="146" text-anchor="middle">- Enter marks and personal choices</text>
+  <text class="box-body" x="590" y="164" text-anchor="middle">- Add guardian email</text>
+
+  <rect class="process-green" x="430" y="230" width="320" height="80"/>
+  <text class="box-title" x="590" y="253" text-anchor="middle">1.2 Validate / OCR</text>
+  <text class="box-body" x="590" y="276" text-anchor="middle">- Check marks and required fields</text>
+  <text class="box-body" x="590" y="294" text-anchor="middle">- Extract grades from report cards</text>
+
+  <rect class="process-yellow" x="430" y="360" width="320" height="80"/>
+  <text class="box-title" x="590" y="383" text-anchor="middle">1.3 Build Features</text>
+  <text class="box-body" x="590" y="406" text-anchor="middle">- Encode categories</text>
+  <text class="box-body" x="590" y="424" text-anchor="middle">- Compute subject-group scores</text>
+
+  <rect class="process-purple" x="430" y="490" width="320" height="80"/>
+  <text class="box-title" x="590" y="513" text-anchor="middle">1.4 Predict Pathway</text>
+  <text class="box-body" x="590" y="536" text-anchor="middle">- Load Random Forest artifacts</text>
+  <text class="box-body" x="590" y="554" text-anchor="middle">- Produce pathway probabilities</text>
+
+  <rect class="process-pink" x="430" y="620" width="320" height="80"/>
+  <text class="box-title" x="590" y="643" text-anchor="middle">1.5 Present Results</text>
+  <text class="box-body" x="590" y="666" text-anchor="middle">- Show ranked pathways</text>
+  <text class="box-body" x="590" y="684" text-anchor="middle">- Prepare printable recommendation</text>
+
+  <rect class="process-teal" x="430" y="750" width="320" height="80"/>
+  <text class="box-title" x="590" y="773" text-anchor="middle">1.6 Send Notification</text>
+  <text class="box-body" x="590" y="796" text-anchor="middle">- Build result-ready email</text>
+  <text class="box-body" x="590" y="814" text-anchor="middle">- Send to parent / guardian</text>
+
+  <!-- Data stores -->
+  <g id="store-d1">
+    <path class="store" d="M1020 104 C1020 88 1200 88 1200 104 L1200 158 C1200 174 1020 174 1020 158 Z"/>
+    <ellipse class="store" cx="1110" cy="104" rx="90" ry="16"/>
+    <text class="store-label" x="1110" y="128" text-anchor="middle">D1</text>
+    <text class="store-label" x="1110" y="148" text-anchor="middle">Survey Dataset</text>
+  </g>
+
+  <g id="store-d2">
+    <path class="store" d="M1020 234 C1020 218 1200 218 1200 234 L1200 288 C1200 304 1020 304 1020 288 Z"/>
+    <ellipse class="store" cx="1110" cy="234" rx="90" ry="16"/>
+    <text class="store-label" x="1110" y="258" text-anchor="middle">D2</text>
+    <text class="store-label" x="1110" y="278" text-anchor="middle">Temporary Uploads</text>
+  </g>
+
+  <g id="store-d3">
+    <path class="store" d="M1020 364 C1020 348 1200 348 1200 364 L1200 418 C1200 434 1020 434 1020 418 Z"/>
+    <ellipse class="store" cx="1110" cy="364" rx="90" ry="16"/>
+    <text class="store-label" x="1110" y="388" text-anchor="middle">D3</text>
+    <text class="store-label" x="1110" y="408" text-anchor="middle">Prepared Features</text>
+  </g>
+
+  <g id="store-d4">
+    <path class="store" d="M1020 494 C1020 478 1200 478 1200 494 L1200 548 C1200 564 1020 564 1020 548 Z"/>
+    <ellipse class="store" cx="1110" cy="494" rx="90" ry="16"/>
+    <text class="store-label" x="1110" y="518" text-anchor="middle">D4</text>
+    <text class="store-label" x="1110" y="538" text-anchor="middle">Model Artifacts</text>
+  </g>
+
+  <g id="store-d5">
+    <path class="store" d="M1020 624 C1020 608 1200 608 1200 624 L1200 678 C1200 694 1020 694 1020 678 Z"/>
+    <ellipse class="store" cx="1110" cy="624" rx="90" ry="16"/>
+    <text class="store-label" x="1110" y="648" text-anchor="middle">D5</text>
+    <text class="store-label" x="1110" y="668" text-anchor="middle">Prediction Session</text>
+  </g>
+
+  <g id="store-d6">
+    <path class="store" d="M1020 858 C1020 842 1200 842 1200 858 L1200 912 C1200 928 1020 928 1020 912 Z"/>
+    <ellipse class="store" cx="1110" cy="858" rx="90" ry="16"/>
+    <text class="store-label" x="1110" y="882" text-anchor="middle">D6</text>
+    <text class="store-label" x="1110" y="902" text-anchor="middle">Email Settings</text>
+  </g>
+
+  <!-- Process-to-process vertical flow labels sit beside the downward arrows. -->
+  <path class="flow" d="M590 180 V230"/>
+  <rect class="label-bg" x="610" y="193" width="112" height="23"/>
+  <text class="label" x="666" y="209" text-anchor="middle">submitted form</text>
+
+  <path class="flow" d="M590 310 V360"/>
+  <rect class="label-bg" x="610" y="323" width="114" height="23"/>
+  <text class="label" x="667" y="339" text-anchor="middle">validated grades</text>
+
+  <path class="flow" d="M590 440 V490"/>
+  <rect class="label-bg" x="610" y="453" width="104" height="23"/>
+  <text class="label" x="662" y="469" text-anchor="middle">feature vector</text>
+
+  <path class="flow" d="M590 570 V620"/>
+  <rect class="label-bg" x="610" y="583" width="112" height="23"/>
+  <text class="label" x="666" y="599" text-anchor="middle">prediction result</text>
+
+  <path class="flow" d="M590 700 V750"/>
+  <rect class="label-bg" x="610" y="713" width="122" height="23"/>
+  <text class="label" x="671" y="729" text-anchor="middle">result-ready event</text>
+
+  <!-- External flows: labels sit on the same route as each arrow. -->
+  <path class="flow" d="M235 145 H430"/>
+  <rect class="label-bg" x="265" y="120" width="118" height="23"/>
+  <text class="label" x="324" y="136" text-anchor="middle">student details</text>
+
+  <path class="flow" d="M235 185 H330 V270 H430"/>
+  <rect class="label-bg" x="255" y="210" width="105" height="23"/>
+  <text class="label" x="307.5" y="226" text-anchor="middle">report cards</text>
+
+  <path class="flow" d="M235 760 H330 V160 H430"/>
+  <rect class="label-bg" x="252" y="735" width="138" height="23"/>
+  <text class="label" x="321" y="751" text-anchor="middle">corrections</text>
+
+  <path class="flow" d="M430 650 H350 V790 H235"/>
+  <rect class="label-bg" x="255" y="790" width="116" height="23"/>
+  <text class="label" x="313" y="806" text-anchor="middle">guidance report</text>
+
+  <path class="flow" d="M430 680 H300 V205 H235"/>
+  <rect class="label-bg" x="250" y="650" width="116" height="23"/>
+  <text class="label" x="308" y="666" text-anchor="middle">printable result</text>
+
+  <!-- Data store flows: each label follows the connection direction. -->
+  <path class="flow" d="M1020 132 H960 V345 H750"/>
+  <rect class="label-bg" x="888" y="172" width="112" height="23"/>
+  <text class="label" x="944" y="188" text-anchor="middle">training data</text>
+
+  <path class="flow" d="M750 255 H1020"/>
+  <rect class="label-bg" x="825" y="230" width="110" height="23"/>
+  <text class="label" x="880" y="246" text-anchor="middle">uploaded files</text>
+
+  <path class="flow" d="M1020 285 H750"/>
+  <rect class="label-bg" x="826" y="292" width="100" height="23"/>
+  <text class="label" x="876" y="308" text-anchor="middle">OCR source</text>
+
+  <path class="flow" d="M750 390 H1020"/>
+  <rect class="label-bg" x="817" y="365" width="124" height="23"/>
+  <text class="label" x="879" y="381" text-anchor="middle">engineered data</text>
+
+  <path class="flow" d="M1020 418 H850 V520 H750"/>
+  <rect class="label-bg" x="823" y="430" width="150" height="23"/>
+  <text class="label" x="898" y="446" text-anchor="middle">prepared features</text>
+
+  <path class="flow" d="M1020 530 H750"/>
+  <rect class="label-bg" x="825" y="505" width="132" height="23"/>
+  <text class="label" x="891" y="521" text-anchor="middle">model artifacts</text>
+
+  <path class="flow" d="M750 650 H1020"/>
+  <rect class="label-bg" x="822" y="625" width="116" height="23"/>
+  <text class="label" x="880" y="641" text-anchor="middle">session result</text>
+
+  <path class="flow" d="M1020 885 H850 V810 H750"/>
+  <rect class="label-bg" x="855" y="855" width="112" height="23"/>
+  <text class="label" x="911" y="871" text-anchor="middle">SMTP settings</text>
+
+  <path class="flow" d="M750 790 H1280"/>
+  <rect class="label-bg" x="890" y="765" width="172" height="23"/>
+  <text class="label" x="976" y="781" text-anchor="middle">result notification email</text>
+
+  <!-- Privacy note -->
+  <rect class="note" x="60" y="945" width="1380" height="38"/>
+  <text class="note-text" x="750" y="969" text-anchor="middle">Privacy note: live student uploads are temporary processing data. They are used for OCR extraction and removed after processing.</text>
+</svg>
